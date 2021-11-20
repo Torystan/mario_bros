@@ -68,6 +68,7 @@ class Perso {
         if(this.velY < 0){
             if(this.posY - this.hauteur >= unePlateforme.posY - unePlateforme.hauteur && this.posY - this.hauteur <= unePlateforme.posY){ //tête dans la plateforme
                 if(this.posX + this.largeur >= unePlateforme.posX && this.posX <= unePlateforme.posX + unePlateforme.largeur){ //entre les bords d'une plateforme
+                    this.posY = unePlateforme.posY + this.hauteur + 1;
                     this.velY = 0;
                     this.declencherBosse(unePlateforme);
                 }
