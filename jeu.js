@@ -155,7 +155,13 @@ class Entite {
         if (this instanceof Tortue && bosses.length > 0) {
             bosses.forEach(bosse => {
                 if (this.posX + this.largeur > bosse[0].posX && this.posX < bosse[0].posX + bosse[0].largeur) {
-                    this.actionCollisionBosse();
+                    if (this.posX + this.largeur / 2 < bosse[0].posX + bosse[0].largeur * 0.40) {
+                        this.actionCollisionBosse(1);//entite sur la partie gauche de la bosse
+                    } else if (this.posX + this.largeur / 2 > bosse[0].posX + bosse[0].largeur * 0.60) {
+                        this.actionCollisionBosse(3);//entite sur la partie droite de la bosse
+                    } else {
+                        this.actionCollisionBosse(2);//entite sur la partie centrale de la bosse
+                    }
                 }
             });
         }
@@ -248,6 +254,7 @@ class Tortue extends Entite {
         this.init();
         this.timer = 0;
         this.colere = true;
+        this.ancienneVitesse = this.vitesse;
     }
 
     /**
@@ -277,14 +284,44 @@ class Tortue extends Entite {
 
     /**
      * Action à réaliser après être rentré en collision avec une bosse.
+     * 
+     * @param posBosse position de l'entité sur la bosse
+     *      - 1 : partie gauche
+     *      - 2 : partie centrale
+     *      - 3 : partie droite
      */
-    actionCollisionBosse() {
-        if (!this.etatRenverse) {
+    actionCollisionBosse(posBosse) {
+        if (!this.etatRenverse && this.timer < 0) {
             this.etatRenverse = true;
             this.couleur = 'rgb(200, 200, 50)';
-            //Faire un saut /!\ pas fait /!\
+            this.timer = 300;
+            this.saut(posBosse);
+        } else {
+            this.etatRenverse = false;
+            this.timer = 30;
+            this.saut(posBosse);
         }
-        this.timer = 300;
+    }
+
+    /**
+     * Fait sauter la tortue de trois manières différentes, vers la gauche, vers la droite ou tout droit.
+     * 
+     * @param posBosse position de l'entité sur la bosse
+     *      - 1 : partie gauche
+     *      - 2 : partie centrale
+     *      - 3 : partie droite
+     */
+    saut(posBosse) {
+        if (this.vitesse !== 0) this.ancienneVitesse = -this.vitesse;
+        if (posBosse === 1) {
+            this.vitesse = -Math.abs(this.vitesse);
+        } else if (posBosse === 3) {
+            this.vitesse = Math.abs(this.vitesse);
+        } else {
+            this.vitesse = 0;
+        }
+        this.velY = -7;
+        this.surLeSol = false;
     }
 
     /**
@@ -295,8 +332,12 @@ class Tortue extends Entite {
         if (this.etatRenverse && this.timer < 0) {
             this.etatRenverse = false;
             this.couleur = 'rgb(250, 150, 30)';
-            this.vitesse = canvas.width * 0.0015;
+            this.vitesse = this.ancienneVitesse * 1.5;
             this.colere = true;
+        }
+        if (!this.etatRenverse && this.timer > 0) {
+            this.vitesse = this.ancienneVitesse;
+            this.couleur = 'rgb(50, 200, 50)';
         }
     }
 
@@ -304,7 +345,7 @@ class Tortue extends Entite {
      * Déplace l'entitée vers la droite ou la gauche.
      */
     deplacer() {
-        if (!this.etatRenverse) {
+        if (this.timer > 260 || !this.etatRenverse) {
             this.velX += this.vitesse;
             this.posX += this.velX;
         }
@@ -327,7 +368,7 @@ class Plateforme {
      * @param uneBosse bosse à ajouter
      */
     ajouterBosse(uneBosse) {
-        this.bosses.push([uneBosse, 30])//[<uneBosse>, <timer>]
+        this.bosses.push([uneBosse, 20])//[<uneBosse>, <timer>]
     }
 
     /**
