@@ -81,6 +81,7 @@ class Entite {
                     this.posX = uneEntite.posX + this.largeur + 1; //Décale l'entité vers la droite
                 }
                 this.actionCollisionEntite(uneEntite);
+                uneEntite.actionCollisionEntite(this);
             }
         }
     }
@@ -414,12 +415,6 @@ class Jeu {
 
     initEntite() {
         entites.push(new Perso(canvas.width / 2, canvas.height * 0.9));
-    }
-
-    genererTortue() {
-        if (getRandomInt(100) === 1) {
-            entites.push(new Tortue());
-        }
     }
 
     /**
