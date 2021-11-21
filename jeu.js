@@ -1,17 +1,27 @@
 //****************//
 //      class     //
 //****************//
+
 class Entite {
-    constructor(unePosX, unePosY) {
+    constructor() {
+        if (this.constructor === Entite) {
+            throw new TypeError('La classe abstraite "Entite" ne peut pas être instancié');
+        }
         this.velX = 0;
         this.velY = 0;
-        this.posX = unePosX;
-        this.posY = unePosY;
+        this.posX = 0;//Coordonnées du coin en bas à gauche
+        this.posY = 0;
         this.largeur = canvas.width / 16;
         this.hauteur = canvas.height / 11;
         this.vitesse = canvas.width * 0.0009;
         this.couleur = 'rgb(200, 50, 50)';
         this.surLeSol = true;
+        this.vie = 9999;
+    }
+
+    etat() {
+        if (this.vie > 0) return true;
+        return false;
     }
 
     /**
@@ -45,6 +55,44 @@ class Entite {
     }
 
     /**
+     * Analyse si l'entité est entré en collision avec une autre entité.
+     * 
+     * @param lesEntites entités avec lesquelle on analyse la collision
+     */
+    verifierEntites(lesEntites) {
+        lesEntites.forEach(entite => {
+            if (entite !== this) {
+                this.collisionEntite(entite);
+            }
+        });
+    }
+
+    /**
+     * Analyse si l'entité est entré en collision avec une autre entité et la repositionne.
+     * 
+     * @param uneEntite entité avec laquelle on analyse la collision
+     */
+    collisionEntite(uneEntite) {
+        if (this.posX < uneEntite.posX + uneEntite.largeur && this.posX + this.largeur > uneEntite.posX) {
+            if (this.posY - this.hauteur < uneEntite.posY && this.posY > uneEntite.posY - uneEntite.hauteur) {
+                if (this.posX + this.largeur <= uneEntite.posX + uneEntite.largeur) {
+                    this.posX = uneEntite.posX - this.largeur - 1; //Décale l'entité vers la gauche
+                } else {
+                    this.posX = uneEntite.posX + this.largeur + 1; //Décale l'entité vers la droite
+                }
+                this.actionCollisionEntite(uneEntite);
+            }
+        }
+    }
+
+    /**
+     * Action à réaliser après être rentré en collision avec une autre entité.
+     * 
+     * @param uneEntite entité avec laquelle l'entité en entré en collision
+     */
+    actionCollisionEntite(uneEntite) { }
+
+    /**
      * Analyse si l'entité est entré en collision par le haut ou pas le bas,
      * avec toutes les plateformes et avec le sol.
      * 
@@ -63,7 +111,7 @@ class Entite {
     }
 
     /**
-     * Analyse si l'entité est entré en collision avec le haut d'une plateforme (en tombant dessus)
+     * Analyse si l'entité est entré en collision avec le haut d'une plateforme (en tombant dessus).
      * 
      * @param unePlateforme plateforme avec laquelle l'entité en entré en collision
      */
@@ -74,13 +122,14 @@ class Entite {
                     this.posY = unePlateforme.posY - unePlateforme.hauteur;
                     this.velY = 0;
                     this.surLeSol = true;
+                    this.collisionBosse(unePlateforme.bosses);
                 }
             }
         }
     }
 
     /**
-     * Analyse si l'entité est entré en collision avec le bas d'une plateforme (en sautant dedans)
+     * Analyse si l'entité est entré en collision avec le bas d'une plateforme (en sautant dedans).
      * 
      * @param unePlateforme plateforme avec laquelle l'entité en entré en collision
      */
@@ -97,7 +146,22 @@ class Entite {
     }
 
     /**
-     * Déclenche la création de la bosse sur une plateforme
+     * Analyse si une tortue est entré en collision avec une bosse.
+     * 
+     * @param bosses liste des bosses d'une plateforme
+     */
+    collisionBosse(bosses) {
+        if (this instanceof Tortue && bosses.length > 0) {
+            bosses.forEach(bosse => {
+                if (this.posX + this.largeur > bosse[0].posX && this.posX < bosse[0].posX + bosse[0].largeur) {
+                    this.actionCollisionBosse();
+                }
+            });
+        }
+    }
+
+    /**
+     * Déclenche la création de la bosse sur une plateforme.
      * 
      * @param unePlateforme plateforme avec laquelle l'entité en entré en collision
      */
@@ -127,15 +191,22 @@ class Entite {
     }
 
     /**
+     * Action à réaliser à chaque tick.
+     */
+    action() { }
+
+    /**
      * Appel de toutes les fonctions necessaire au mouvement de l'entité.
      * 
      * @param lesPlateformes liste de toutes les plateformes
      */
-    mouvement(lesPlateformes) {
+    mouvement(lesPlateformes, lesEntites) {
         this.deplacer();
         this.frictionEtGravite();
         this.teleportationBords();
+        this.verifierEntites(lesEntites);
         this.verifierSolEtPlateforme(lesPlateformes);
+        this.action();
     }
 
     /**
@@ -149,7 +220,9 @@ class Entite {
 
 class Perso extends Entite {
     constructor(unePosX, unePosY) {
-        super(unePosX, unePosY)
+        super();
+        this.posX = unePosX;
+        this.posY = unePosY;
     }
 
     /**
@@ -159,6 +232,80 @@ class Perso extends Entite {
         if (this.surLeSol) {
             this.velY = -10.5;
             this.surLeSol = false;
+        }
+    }
+}
+
+class Tortue extends Entite {
+    constructor() {
+        super();
+        this.hauteur = canvas.height / 20;
+        this.vitesse = canvas.width * 0.0007;
+        this.etatRenverse = false;
+        this.vie = 2;
+        this.couleur = 'rgb(50, 200, 50)';
+        this.init();
+        this.timer = 0;
+        this.colere = true;
+    }
+
+    /**
+     * Place la tortue dans un tuyau /!\ pas fait /!\
+     */
+    init() {
+        this.posX = Math.floor(Math.random() * (canvas.width));
+        this.posY = canvas.height / 10;
+    }
+
+    /**
+     * Action à réaliser après être rentré en collision avec une autre entité.
+     * 
+     * @param uneEntite entité avec laquelle l'entité en entré en collision
+     */
+    actionCollisionEntite(uneEntite) {
+        if (uneEntite instanceof Perso) {
+            if (this.etatRenverse) {
+                this.vie = 0;
+            } else {
+                uneEntite.vie -= 1;
+            }
+        } else {
+            this.vitesse = -this.vitesse;
+        }
+    }
+
+    /**
+     * Action à réaliser après être rentré en collision avec une bosse.
+     */
+    actionCollisionBosse() {
+        if (!this.etatRenverse) {
+            this.etatRenverse = true;
+            this.couleur = 'rgb(200, 200, 50)';
+            //Faire un saut /!\ pas fait /!\
+        }
+        this.timer = 300;
+    }
+
+    /**
+     * Action à réaliser à chaque tick.
+     */
+    action() {
+        this.timer -= 1;
+        if (this.etatRenverse && this.timer < 0) {
+            this.etatRenverse = false;
+            this.couleur = 'rgb(250, 150, 30)';
+            this.vitesse = canvas.width * 0.0015;
+            this.colere = true;
+        }
+    }
+
+    /**
+     * Déplace l'entitée vers la droite ou la gauche.
+     */
+    deplacer() {
+        if (!this.etatRenverse) {
+            this.velX += this.vitesse;
+            this.posX += this.velX;
         }
     }
 }
@@ -241,6 +388,7 @@ class Bosse {
 class Jeu {
     init() {
         this.initPlateforme()
+        this.initEntite();
         window.addEventListener('keyup', keyHandler);
         window.addEventListener('keydown', keyHandler);
         window.setInterval(this.loop, 14);
@@ -264,6 +412,16 @@ class Jeu {
         plateformes.push(new Plateforme(canvas.width - canvas.width / 2.3, canvas.height - canvas.height / 1.47, canvas.width / 2.3))
     }
 
+    initEntite() {
+        entites.push(new Perso(canvas.width / 2, canvas.height * 0.9));
+    }
+
+    genererTortue() {
+        if (getRandomInt(100) === 1) {
+            entites.push(new Tortue());
+        }
+    }
+
     /**
      * Boucle principal du jeu.
      */
@@ -274,8 +432,19 @@ class Jeu {
         plateformes.forEach(plat => {
             plat.dessiner();
         });
-        perso.mouvement(plateformes);
-        perso.dessiner();
+
+        entites.forEach(uneEntite => {
+            if (!uneEntite.etat()) { //verifie si l'entite est morte
+                entites.splice(entites.indexOf(uneEntite), 1);
+            }
+            uneEntite.mouvement(plateformes, entites);
+            uneEntite.dessiner();
+        });
+
+        //Création des tortues
+        if (Math.random() < 0.004) {
+            entites.push(new Tortue());
+        }
     }
 }
 
@@ -288,8 +457,8 @@ var ctx = canvas.getContext('2d');
 const touches_appuye = [];
 const friction = 0.75;
 const gravite = 0.5;
-const perso = new Perso(canvas.width / 2, canvas.height * 0.9);
 const plateformes = [];
+const entites = []
 
 //énumération des touches
 const touche = {
