@@ -81,7 +81,6 @@ class Entite {
                     this.posX = uneEntite.posX + this.largeur + 1; //Décale l'entité vers la droite
                 }
                 this.actionCollisionEntite(uneEntite);
-                uneEntite.actionCollisionEntite(this);
             }
         }
     }
@@ -241,6 +240,21 @@ class Perso extends Entite {
             this.surLeSol = false;
         }
     }
+
+    /**
+     * Action à réaliser après être rentré en collision avec une autre entité.
+     * 
+     * @param uneEntite entité avec laquelle l'entité en entré en collision
+     */
+    actionCollisionEntite(uneEntite) {
+        if (!(uneEntite instanceof Perso)) {
+            if (uneEntite.etatRenverse) {
+                uneEntite.vie = 0;
+            } else {
+                this.vie -= 1;
+            }
+        }
+    }
 }
 
 class Tortue extends Entite {
@@ -345,7 +359,7 @@ class Tortue extends Entite {
      * Déplace l'entitée vers la droite ou la gauche.
      */
     deplacer() {
-        if (this.timer > 260 || !this.etatRenverse) {
+        if (this.timer > 280 || !this.etatRenverse) {
             this.velX += this.vitesse;
             this.posX += this.velX;
         }
