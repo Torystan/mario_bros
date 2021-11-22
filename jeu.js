@@ -16,7 +16,8 @@ class Entite {
         this.vitesse = canvas.width * 0.0009;
         this.couleur = 'rgb(200, 50, 50)';
         this.surLeSol = true;
-        this.vie = 9999;
+        this.vie = 1;
+        this.timerPlafond = 0;
     }
 
     etat() {
@@ -31,7 +32,12 @@ class Entite {
     frictionEtGravite() {
         this.velX *= friction;
         this.velY += gravite;
-        this.posY += this.velY;
+        if (this.timerPlafond <= 0) {
+            this.posY += this.velY;
+        } else {
+            this.timerPlafond--; //rester coller au plafond
+            this.velY = 0;
+        }
     }
 
     /**
@@ -131,7 +137,7 @@ class Entite {
     /**
      * Analyse si l'entité est entré en collision avec le bas d'une plateforme (en sautant dedans).
      * 
-     * @param unePlateforme plateforme avec laquelle l'entité en entré en collision
+     * @param unePlateforme plateforme avec laquelle l'entité en entrée en collision
      */
     collisionPlateformePlafond(unePlateforme) {
         if (this.velY < 0) {
@@ -140,6 +146,7 @@ class Entite {
                     this.velY = 0;
                     this.posY = unePlateforme.posY + this.hauteur + 1;
                     this.declencherBosse(unePlateforme);
+                    this.timerPlafond = 15;
                 }
             }
         }
@@ -236,7 +243,7 @@ class Perso extends Entite {
      */
     saut() {
         if (this.surLeSol) {
-            this.velY = -10.5;
+            this.velY = -9.8;
             this.surLeSol = false;
         }
     }
@@ -359,7 +366,7 @@ class Tortue extends Entite {
      * Déplace l'entitée vers la droite ou la gauche.
      */
     deplacer() {
-        if (this.timer > 280 || !this.etatRenverse) {
+        if (this.timer > 270 || !this.etatRenverse) {
             this.velX += this.vitesse;
             this.posX += this.velX;
         }
@@ -506,7 +513,7 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 const touches_appuye = [];
 const friction = 0.75;
-const gravite = 0.5;
+const gravite = 0.4;
 const plateformes = [];
 const entites = []
 
