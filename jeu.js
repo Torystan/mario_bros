@@ -16,7 +16,7 @@ class Entite {
         this.vitesse = canvas.width * 0.0009;
         this.couleur = 'rgb(200, 50, 50)';
         this.surLeSol = true;
-        this.vie = 1;
+        this.vie = 9999;
         this.timerPlafond = 0;
     }
 
@@ -58,6 +58,40 @@ class Entite {
             this.saut();
         }
         this.posX += this.velX;
+    }
+
+    /**
+     * Analyse si l'entité est entrée dans un tuyau.
+     * 
+     * @param lesTuyaux tuyaux avec lesquel on analyse la collision
+     */
+    verifierTuyaux(lesTuyaux) {
+        lesTuyaux.forEach(tuyau => {
+            if (!(this instanceof Perso)) {
+                this.collisionTuyau(tuyau);
+            }
+        });
+    }
+
+    collisionTuyau(tuyau){
+        if(this.posY - this.hauteur < tuyau.posY && this.posY > tuyau.posY - tuyau.hauteur){ //regarde si l'entitée est à la hauteur du tuyau
+            if(tuyau.sens === 0){ //tuyau à gauche
+                if(this.posX <= tuyau.posX + tuyau.largeur){ //toucher l'entrée du tuyaux
+                    this.actionCollisionTuyau(tuyau);
+                }
+            } else { //tuyau à droite
+                if(this.posX + this.largeur> tuyau.posX){ //toucher l'entrée du tuyaux
+                    this.actionCollisionTuyau(tuyau);
+                }
+            }
+        }
+    }
+
+    actionCollisionTuyau(tuyau){
+        this.posY = tuyau.posY - 1;
+        if(tuyau.sens === 0 && this.posX < tuyau.posX || tuyau.sens === 1 && this.posX + this.largeur > tuyau.posX + tuyau.largeur){
+            tuyau.teleporter(this);
+        }
     }
 
     /**
@@ -213,12 +247,13 @@ class Entite {
      * 
      * @param lesPlateformes liste de toutes les plateformes
      */
-    mouvement(lesPlateformes, lesEntites) {
+    mouvement(lesPlateformes, lesEntites, lesTuyaux) {
         this.deplacer();
         this.frictionEtGravite();
         this.teleportationBords();
         this.verifierEntites(lesEntites);
         this.verifierSolEtPlateforme(lesPlateformes);
+        this.verifierTuyaux(lesTuyaux)
         this.action();
     }
 
@@ -265,25 +300,18 @@ class Perso extends Entite {
 }
 
 class Tortue extends Entite {
-    constructor() {
+    constructor(unePosX, unePosY, sens) {
         super();
+        this.posX = unePosX;
+        this.posY = unePosY;
         this.hauteur = canvas.height / 20;
-        this.vitesse = canvas.width * 0.0007;
+        this.vitesse = sens * Math.abs(canvas.width * 0.0007);
         this.etatRenverse = false;
         this.vie = 2;
         this.couleur = 'rgb(50, 200, 50)';
-        this.init();
         this.timer = 0;
         this.colere = true;
         this.ancienneVitesse = this.vitesse;
-    }
-
-    /**
-     * Place la tortue dans un tuyau /!\ pas fait /!\
-     */
-    init() {
-        this.posX = Math.floor(Math.random() * (canvas.width));
-        this.posY = canvas.height / 10;
     }
 
     /**
@@ -448,10 +476,54 @@ class Bosse {
     }
 }
 
+class Tuyau {
+    constructor(unePosX, unePosY, unType, unSens) {
+        this.posX = unePosX;
+        this.posY = unePosY;
+        this.largeur = canvas.width/10;
+        this.hauteur = canvas.height / 15;
+        this.couleur = 'rgb(0, 100, 0)';
+        this.liaison;
+        this.sens = unSens;//0 : tuyau à gauche; 1 : tuyau à droite
+        this.type = unType;//0 : entrée; 1 : sortie
+    }
+
+    teleporter(uneEntite){
+        if(this.type === 0){
+            uneEntite.posY = this.liaison.posY;
+            if(this.sens === 0){
+                uneEntite.vitesse = Math.abs(uneEntite.vitesse);
+            } else {
+                uneEntite.vitesse = -Math.abs(uneEntite.vitesse);
+            }
+        }
+    }
+
+    /**
+     * modifie la tuyau lié à ce tuyau.
+     * Seulement si les deux tuyaux sont de types différents.
+     */
+    setLiaison(unTuyau){
+        if(this.type !== unTuyau.type){
+            this.liaison = unTuyau;
+        }
+    }
+
+    /**
+     * Dessine la bosse.
+     */
+     dessiner() {
+        ctx.fillStyle = this.couleur;
+        ctx.fillRect(this.posX, this.posY - this.hauteur, this.largeur, this.hauteur);
+    }
+}
+
 class Jeu {
     init() {
+        this.num = 0;
         this.initPlateforme()
         this.initEntite();
+        this.initTuyaux();
         window.addEventListener('keyup', keyHandler);
         window.addEventListener('keydown', keyHandler);
         window.setInterval(this.loop, 14);
@@ -476,7 +548,21 @@ class Jeu {
     }
 
     initEntite() {
-        entites.push(new Perso(canvas.width / 2, canvas.height * 0.9));
+        entites.push(new Perso(canvas.width / 2, canvas.height * 0.7));
+    }
+
+    initTuyaux() {
+        //tuyaux d'entrée
+        tuyaux.push(new Tuyau(0, canvas.height - canvas.height / 9.33, 0, 0));
+        tuyaux.push(new Tuyau(canvas.width - canvas.width/10, canvas.height - canvas.height / 9.33, 0, 1));
+
+        //tuyaux de sortie
+        tuyaux.push(new Tuyau(0, canvas.height * 0.15, 1, 0));
+        tuyaux.push(new Tuyau(canvas.width - tuyaux[2].largeur, canvas.height * 0.15, 1, 1));
+
+        //liaison des tuyaux d'entrées et de sorties
+        tuyaux[0].setLiaison(tuyaux[2]);
+        tuyaux[1].setLiaison(tuyaux[3]);
     }
 
     /**
@@ -484,23 +570,41 @@ class Jeu {
      */
     loop() {
         ctx.fillStyle = 'rgb(0, 0, 0)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillRect(0, 0, canvas.width, canvas.height);//fond
+        ctx.fillStyle = 'rgb(91, 60, 17)';
+        ctx.fillRect(0, canvas.height - canvas.height / 9.33, canvas.width, canvas.height/9.33);//fond
 
+        //Les plateformes
         plateformes.forEach(plat => {
             plat.dessiner();
         });
 
-        entites.forEach(uneEntite => {
+        //Les entités sans le perso
+        entites.slice(1).forEach(uneEntite => {
             if (!uneEntite.etat()) { //verifie si l'entite est morte
                 entites.splice(entites.indexOf(uneEntite), 1);
             }
-            uneEntite.mouvement(plateformes, entites);
+            uneEntite.mouvement(plateformes, entites, tuyaux);
             uneEntite.dessiner();
         });
 
+        //Les tuyaux
+        tuyaux.forEach(tuyau => {
+            tuyau.dessiner();
+        });
+
+        //Le perso
+        entites[0].mouvement(plateformes, entites, tuyaux);
+        entites[0].dessiner();
+
         //Création des tortues
-        if (Math.random() < 0.004) {
-            entites.push(new Tortue());
+        this.num = Math.random();
+        if (this.num < 0.003) {
+            if(this.num % 2 === 0){
+                entites.push(new Tortue(tuyaux[2].posX, tuyaux[3].posY - 15, 1));
+            } else {
+                entites.push(new Tortue(tuyaux[2].posX, tuyaux[3].posY - 15, -1));
+            }
         }
     }
 }
@@ -515,7 +619,8 @@ const touches_appuye = [];
 const friction = 0.75;
 const gravite = 0.4;
 const plateformes = [];
-const entites = []
+const entites = [];
+const tuyaux = [];
 
 //énumération des touches
 const touche = {
