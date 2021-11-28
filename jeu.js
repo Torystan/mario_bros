@@ -16,7 +16,7 @@ class Entite {
         this.vitesse = canvas.width * 0.0009;
         this.couleur = 'rgb(200, 50, 50)';
         this.surLeSol = true;
-        this.vie = 9999;
+        this.vie = 1;
         this.timerPlafond = 0;
     }
 
@@ -89,6 +89,7 @@ class Entite {
 
     actionCollisionTuyau(tuyau){
         this.posY = tuyau.posY - 1;
+        this.velY = 0;
         if(tuyau.sens === 0 && this.posX < tuyau.posX || tuyau.sens === 1 && this.posX + this.largeur > tuyau.posX + tuyau.largeur){
             tuyau.teleporter(this);
         }
@@ -253,7 +254,7 @@ class Entite {
         this.teleportationBords();
         this.verifierEntites(lesEntites);
         this.verifierSolEtPlateforme(lesPlateformes);
-        this.verifierTuyaux(lesTuyaux)
+        this.verifierTuyaux(lesTuyaux);
         this.action();
     }
 
@@ -277,7 +278,7 @@ class Perso extends Entite {
      * Modifie la vélocité Y pour faire sauter le personnage.
      */
     saut() {
-        if (this.surLeSol) {
+        if (this.surLeSol && this.velY === 0) {
             this.velY = -9.8;
             this.surLeSol = false;
         }
@@ -294,12 +295,22 @@ class Perso extends Entite {
                 uneEntite.vie = 0;
             } else {
                 this.vie -= 1;
+                console.log("perte de vie")
             }
         }
     }
+
+    /**
+     * Dessine une entité.
+     */
+    dessiner() {
+        let img = new Image();
+        img.src = 'Paste.png';
+        ctx.drawImage(img, this.posX, this.posY - this.hauteur, this.largeur, this.hauteur);
+    }
 }
 
-class Tortue extends Entite {
+class Tortue extends Entite{
     constructor(unePosX, unePosY, sens) {
         super();
         this.posX = unePosX;
@@ -398,6 +409,129 @@ class Tortue extends Entite {
             this.velX += this.vitesse;
             this.posX += this.velX;
         }
+    }
+}
+
+class BouleDeFeu {
+    constructor(unePosX, unePosY, sens, type) {
+        this.velX = 0;
+        this.velY = 0;
+        this.posX = unePosX;
+        this.posY = unePosY;
+        this.rayon = canvas.height / 30;
+        this.vitesse = sens * Math.abs(canvas.width * 0.004);
+        this.vie = 1;
+        this.couleur = 'rgb(255, 0, 0)';
+        this.timer = 1000;
+        this.type = type; //type 0 : avance tout droit; type 1 : rebondi
+    }
+
+    etat() {
+        if (this.vie > 0) return true;
+        return false;
+    }
+
+    /**
+     * Analyse si la boule est entrée en collision avec un Perso.
+     * 
+     * @param perso avec lesquel on analyse la collision
+     * @return boolean
+     * 		- true : la boule touche le perso
+     * 		- false : la boule ne touche pas le perso
+     */
+    collision(perso) {
+    	var cercleDistanceX = Math.abs(this.posX - (perso.posX + perso.largeur/2));
+        var cercleDistanceY = Math.abs(this.posY - (perso.posY - perso.hauteur/2));
+
+    	if (cercleDistanceX > (perso.largeur/2 + this.rayon)) {
+    		return false;
+    	}
+    	if (cercleDistanceY > (perso.hauteur/2 + this.rayon)) {
+    		return false;
+    	}
+    	if (cercleDistanceX <= (perso.largeur/2)) {
+    		return true;
+    	}
+    	if (cercleDistanceY <= (perso.hauteur/2)) {
+    		return true;
+    	}
+    	var cornerDistance_sq = (cercleDistanceX - perso.largeur/2)^2 + (cercleDistanceY - perso.hauteur/2)^2;
+    	return (cornerDistance_sq <= (this.rayon^2));
+    }
+
+    /**
+     * Analyse si la boule est entrée en collision avec un Perso.
+     * 
+     * @param lesPersos persos avec lesquels on analyse la collision
+     */
+    verifierPersos(lesPersos) {
+        lesPersos.forEach(unPerso => {
+        	if(this.collision(unPerso)){
+        		unPerso.vie -= 1;
+            	this.vie = 0;
+        	}
+        });
+    }
+
+    /**
+     * Action à réaliser à chaque tick.
+     */
+    action() {
+        this.timer -= 1;
+        if (this.timer < 0) {
+            this.vie = 0;
+        }
+    }
+
+    /**
+     * Si type 0, la boule avance tout droit.
+     * Si type 1, la boule rebondi.
+     */
+    deplacer() {
+    	if(this.type === 0){
+    		this.velY = 0;
+            this.posX += this.vitesse;
+    	}
+    }
+
+    /**
+     * Replace l'entitée lorsqu'elle dépace de l'écran pas les bords.
+     * - Si elle sort par la droite, elle réapparait à gauche
+     * - Si elle sort par la gauche, elle réapparait à droite
+     */
+    toucherBords() {
+        if (this.posX - this.rayon < 0) {
+            this.posX = 0 + this.rayon;
+            this.vitesse = -this.vitesse;
+        }
+        if (this.posX + this.rayon > canvas.width) {
+            this.posX = canvas.width - this.rayon;
+            this.vitesse = -this.vitesse;
+        }
+    }
+
+    /**
+     * Appel de toutes les fonctions necessaire au mouvement de la boule.
+     * 
+     * @param lesPlateformes liste de toutes les plateformes
+     */
+    mouvement(lesPlateformes, lesPersos) {
+        this.deplacer();
+        this.toucherBords();
+        this.verifierPersos(lesPersos);
+        this.action();
+        //this.verifierSolEtPlateforme(lesPlateformes);
+    }
+
+    /**
+     * Dessine la boule.
+     */
+    dessiner() {
+    	ctx.beginPath();
+        ctx.fillStyle = this.couleur;
+        ctx.arc(this.posX, this.posY, this.rayon, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
     }
 }
 
@@ -548,7 +682,7 @@ class Jeu {
     }
 
     initEntite() {
-        entites.push(new Perso(canvas.width / 2, canvas.height * 0.7));
+        persos.push(new Perso(canvas.width / 2, canvas.height * 0.7));
     }
 
     initTuyaux() {
@@ -580,7 +714,7 @@ class Jeu {
         });
 
         //Les entités sans le perso
-        entites.slice(1).forEach(uneEntite => {
+        entites.forEach(uneEntite => {
             if (!uneEntite.etat()) { //verifie si l'entite est morte
                 entites.splice(entites.indexOf(uneEntite), 1);
             }
@@ -593,9 +727,24 @@ class Jeu {
             tuyau.dessiner();
         });
 
-        //Le perso
-        entites[0].mouvement(plateformes, entites, tuyaux);
-        entites[0].dessiner();
+        //Les boules de feu
+        boules.forEach(uneBoule => {
+            if (!uneBoule.etat()) { //verifie si l'entite est morte
+                console.log("destruction")
+                boules.splice(boules.indexOf(uneBoule), 1);
+            }
+            uneBoule.mouvement(plateformes, persos);
+            uneBoule.dessiner();
+        });
+
+        //Les personnages
+        persos.forEach(unPerso => {
+            if (!unPerso.etat()) { //verifie si l'entite est morte
+                persos.splice(persos.indexOf(unPerso), 1);
+            }
+            unPerso.mouvement(plateformes, entites, tuyaux);
+            unPerso.dessiner();
+        });
 
         //Création des tortues
         this.num = Math.random();
@@ -604,6 +753,21 @@ class Jeu {
                 entites.push(new Tortue(tuyaux[2].posX, tuyaux[3].posY - 15, 1));
             } else {
                 entites.push(new Tortue(tuyaux[2].posX, tuyaux[3].posY - 15, -1));
+            }
+        }
+
+        //Création des boules de feu
+        this.num = Math.random();
+        if (this.num < 0.004) {
+        	this.num = Math.floor(Math.random() * 4);
+        	if(this.num === 0){
+                boules.push(new BouleDeFeu(0, canvas.height * 0.85, 1, 0));
+            } else if(this.num === 1){
+                boules.push(new BouleDeFeu(0, canvas.height * 0.6, 1, 0));
+            }else if(this.num === 2){
+                boules.push(new BouleDeFeu(0, canvas.height * 0.4, 1, 0));
+            }else if(this.num === 3){
+                boules.push(new BouleDeFeu(0, canvas.height * 0.2, 1, 0));
             }
         }
     }
@@ -620,6 +784,8 @@ const friction = 0.75;
 const gravite = 0.4;
 const plateformes = [];
 const entites = [];
+const boules = [];
+const persos = [];
 const tuyaux = [];
 
 //énumération des touches
