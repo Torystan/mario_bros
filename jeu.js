@@ -41,26 +41,6 @@ class Entite {
     }
 
     /**
-     * Déplace l'entitée dans toutes les direction à l'aide des touches du clavier.
-     * 
-     * - Aller à gauche : DROITE ou D
-     * - Aller à droite : GAUCHE ou Q
-     * - Aller vers le haut (sauter) : HAUT ou ESPACE ou Z
-     */
-    deplacer() {
-        if (touches_appuye[touche.DROITE] || touches_appuye[touche.D]) {
-            this.velX += this.vitesse;
-        }
-        if (touches_appuye[touche.GAUCHE] || touches_appuye[touche.Q]) {
-            this.velX += -this.vitesse;
-        }
-        if (touches_appuye[touche.HAUT] || touches_appuye[touche.ESPACE] || touches_appuye[touche.Z]) {
-            this.saut();
-        }
-        this.posX += this.velX;
-    }
-
-    /**
      * Analyse si l'entité est entrée dans un tuyau.
      * 
      * @param lesTuyaux tuyaux avec lesquel on analyse la collision
@@ -272,6 +252,53 @@ class Perso extends Entite {
         super();
         this.posX = unePosX;
         this.posY = unePosY;
+        this.spriteActif = 0;
+        this.sprites = [];
+        this.initSprites();
+    }
+
+    initSprites(){
+    	this.sprites[0] = new Image();
+    	this.sprites[0].src = 'sprites/mario/mario_statique.png';
+
+    	this.sprites[1] = new Image();
+    	this.sprites[1].src = 'sprites/mario/mario_statique_inv.png';
+
+    	this.sprites[2] = new Image();
+    	this.sprites[2].src = 'sprites/mario/mario_saute.png';
+
+    	this.sprites[3] = new Image();
+    	this.sprites[3].src = 'sprites/mario/mario_saute_inv.png';
+
+    	this.sprites[4] = new Image();
+    	this.sprites[4].src = 'sprites/mario/mario_marche_1.png';
+
+    	this.sprites[5] = new Image();
+    	this.sprites[5].src = 'sprites/mario/mario_marche_2.png';
+
+    	this.sprites[6] = new Image();
+    	this.sprites[6].src = 'sprites/mario/mario_marche_3.png';
+
+    	this.sprites[7] = new Image();
+    	this.sprites[7].src = 'sprites/mario/mario_marche_4.png';
+
+    	this.sprites[8] = new Image();
+    	this.sprites[8].src = 'sprites/mario/mario_marche_5.png';
+
+    	this.sprites[9] = new Image();
+    	this.sprites[9].src = 'sprites/mario/mario_marche_1_inv.png';
+
+    	this.sprites[10] = new Image();
+    	this.sprites[10].src = 'sprites/mario/mario_marche_2_inv.png';
+
+    	this.sprites[11] = new Image();
+    	this.sprites[11].src = 'sprites/mario/mario_marche_3_inv.png';
+
+    	this.sprites[12] = new Image();
+    	this.sprites[12].src = 'sprites/mario/mario_marche_4_inv.png';
+
+    	this.sprites[13] = new Image();
+    	this.sprites[13].src = 'sprites/mario/mario_marche_5_inv.png';
     }
 
     /**
@@ -279,8 +306,14 @@ class Perso extends Entite {
      */
     saut() {
         if (this.surLeSol && this.velY === 0) {
-            this.velY = -9.8;
+            this.velY = -9.5;
             this.surLeSol = false;
+
+            if(this.vitesse > 0){
+            	this.spriteActif = 2;
+            } else {
+            	this.spriteActif = 1;
+            }
         }
     }
 
@@ -301,12 +334,50 @@ class Perso extends Entite {
     }
 
     /**
+     * Déplace l'entitée dans toutes les direction à l'aide des touches du clavier.
+     * 
+     * - Aller à gauche : DROITE ou D
+     * - Aller à droite : GAUCHE ou Q
+     * - Aller vers le haut (sauter) : HAUT ou ESPACE ou Z
+     */
+    deplacer() {
+    	//modifie le sprite quand le personnage est immobile
+    	if(this.velX < Math.abs(this.vitesse) && this.velX > 0 && this.surLeSol){
+    		this.spriteActif = 1;
+    	} else if(this.velX > -Math.abs(this.vitesse) && this.velX < 0 && this.surLeSol){
+    		this.spriteActif = 0;
+    	}
+        if (touches_appuye[touche.DROITE] || touches_appuye[touche.D]) {
+            this.velX += this.vitesse;
+            //modifie le sprite quand le personnage avance à droite
+            if(this.surLeSol){
+            	if(this.spriteActif < 9) this.spriteActif = 9;
+            	this.spriteActif = 9 + ((this.spriteActif - 8) % 5);
+            } else {
+            	this.spriteActif = 3; //saute vers la droite
+            }
+        }
+        if (touches_appuye[touche.GAUCHE] || touches_appuye[touche.Q]) {
+            this.velX += -this.vitesse;
+            //modifie le sprite quand le personnage avance à gauche
+            if(this.surLeSol){
+            	if(this.spriteActif < 4) this.spriteActif = 4;
+            	this.spriteActif = 4 + (this.spriteActif - 3) % 5;
+            } else {
+            	this.spriteActif = 2; //saute vers la gauche
+            }
+        }
+        if (touches_appuye[touche.HAUT] || touches_appuye[touche.ESPACE] || touches_appuye[touche.Z]) {
+            this.saut();
+        }
+        this.posX += this.velX;
+    }
+
+    /**
      * Dessine une entité.
      */
     dessiner() {
-        let img = new Image();
-        img.src = 'Paste.png';
-        ctx.drawImage(img, this.posX, this.posY - this.hauteur, this.largeur, this.hauteur);
+        ctx.drawImage(this.sprites[this.spriteActif], this.posX, this.posY - this.hauteur, this.largeur, this.hauteur);
     }
 }
 
@@ -380,7 +451,7 @@ class Tortue extends Entite{
         } else {
             this.vitesse = 0;
         }
-        this.velY = -7;
+        this.velY = -6;
         this.surLeSol = false;
     }
 
@@ -495,18 +566,11 @@ class BouleDeFeu {
     }
 
     /**
-     * Replace l'entitée lorsqu'elle dépace de l'écran pas les bords.
-     * - Si elle sort par la droite, elle réapparait à gauche
-     * - Si elle sort par la gauche, elle réapparait à droite
+     * Détrui la boule de feu quand elle touche un bord
      */
     toucherBords() {
-        if (this.posX - this.rayon < 0) {
-            this.posX = 0 + this.rayon;
-            this.vitesse = -this.vitesse;
-        }
-        if (this.posX + this.rayon > canvas.width) {
-            this.posX = canvas.width - this.rayon;
-            this.vitesse = -this.vitesse;
+        if (this.posX - this.rayon < 0 || this.posX + this.rayon > canvas.width) {
+            this.vie = 0;
         }
     }
 
@@ -758,16 +822,16 @@ class Jeu {
 
         //Création des boules de feu
         this.num = Math.random();
-        if (this.num < 0.004) {
+        if (this.num < 0.002) {
         	this.num = Math.floor(Math.random() * 4);
         	if(this.num === 0){
-                boules.push(new BouleDeFeu(0, canvas.height * 0.85, 1, 0));
+                boules.push(new BouleDeFeu(30, canvas.height * 0.85, 1, 0));
             } else if(this.num === 1){
-                boules.push(new BouleDeFeu(0, canvas.height * 0.6, 1, 0));
+                boules.push(new BouleDeFeu(30, canvas.height * 0.6, 1, 0));
             }else if(this.num === 2){
-                boules.push(new BouleDeFeu(0, canvas.height * 0.4, 1, 0));
+                boules.push(new BouleDeFeu(30, canvas.height * 0.4, 1, 0));
             }else if(this.num === 3){
-                boules.push(new BouleDeFeu(0, canvas.height * 0.2, 1, 0));
+                boules.push(new BouleDeFeu(30, canvas.height * 0.2, 1, 0));
             }
         }
     }
