@@ -328,7 +328,6 @@ class Perso extends Entite {
                 uneEntite.vie = 0;
             } else {
                 this.vie -= 1;
-                console.log("perte de vie")
             }
         }
     }
@@ -394,6 +393,112 @@ class Tortue extends Entite{
         this.timer = 0;
         this.colere = true;
         this.ancienneVitesse = this.vitesse;
+        this.catSpriteActif = 0;
+        this.spriteActif = 0;
+        this.sprites = [];
+        this.initSprites();
+        this.horloge = 0;
+    }
+
+    initSprites(){
+    	for (var i = 0; i < 10; i++)
+		{
+		 	this.sprites[i] = new Array(5);
+		}
+
+		//avancer
+    	this.sprites[0][0] = new Image();
+    	this.sprites[0][0].src = 'sprites/tortue/marche_1.png';
+
+    	this.sprites[0][1] = new Image();
+    	this.sprites[0][1].src = 'sprites/tortue/marche_2.png';
+
+    	this.sprites[0][2] = new Image();
+    	this.sprites[0][2].src = 'sprites/tortue/marche_3.png';
+
+    	this.sprites[0][3] = new Image();
+    	this.sprites[0][3].src = 'sprites/tortue/marche_4.png';
+
+    	this.sprites[0][4] = new Image();
+    	this.sprites[0][4].src = 'sprites/tortue/marche_5.png';
+
+    	this.sprites[1][0] = new Image();
+    	this.sprites[1][0].src = 'sprites/tortue/marche_1_inv.png';
+
+    	this.sprites[1][1] = new Image();
+    	this.sprites[1][1].src = 'sprites/tortue/marche_2_inv.png';
+
+    	this.sprites[1][2] = new Image();
+    	this.sprites[1][2].src = 'sprites/tortue/marche_3_inv.png';
+
+    	this.sprites[1][3] = new Image();
+    	this.sprites[1][3].src = 'sprites/tortue/marche_4_inv.png';
+
+    	this.sprites[1][4] = new Image();
+    	this.sprites[1][4].src = 'sprites/tortue/marche_5_inv.png';
+
+    	//retournement
+    	this.sprites[2][0] = new Image();
+    	this.sprites[2][0].src = 'sprites/tortue/retournement_1.png';
+
+    	this.sprites[2][1] = new Image();
+    	this.sprites[2][1].src = 'sprites/tortue/retournement_2.png';
+
+    	this.sprites[2][2] = new Image();
+    	this.sprites[2][2].src = 'sprites/tortue/retournement_3.png';
+
+    	this.sprites[2][3] = new Image();
+    	this.sprites[2][3].src = 'sprites/tortue/sortir_1.png';
+
+    	this.sprites[2][4] = new Image();
+    	this.sprites[2][4].src = 'sprites/tortue/boule_1.png';
+
+    	this.sprites[3][0] = new Image();
+    	this.sprites[3][0].src = 'sprites/tortue/retournement_1_inv.png';
+
+    	this.sprites[3][1] = new Image();
+    	this.sprites[3][1].src = 'sprites/tortue/retournement_2_inv.png';
+
+    	this.sprites[3][2] = new Image();
+    	this.sprites[3][2].src = 'sprites/tortue/retournement_3_inv.png';
+
+    	this.sprites[3][3] = new Image();
+    	this.sprites[3][3].src = 'sprites/tortue/sortir_1_inv.png';
+
+    	this.sprites[3][4] = new Image();
+    	this.sprites[3][4].src = 'sprites/tortue/boule_1_inv.png';
+
+    	//sort
+    	this.sprites[4][0] = new Image();
+    	this.sprites[4][0].src = 'sprites/tortue/boule_1.png';
+
+    	this.sprites[4][1] = new Image();
+    	this.sprites[4][1].src = 'sprites/tortue/sortir_1.png';
+
+    	this.sprites[4][2] = new Image();
+    	this.sprites[4][2].src = 'sprites/tortue/retournement_3.png';
+
+    	this.sprites[5][0] = new Image();
+    	this.sprites[5][0].src = 'sprites/tortue/boule_1_inv.png';
+
+    	this.sprites[5][1] = new Image();
+    	this.sprites[5][1].src = 'sprites/tortue/sortir_1_inv.png';
+
+    	this.sprites[5][2] = new Image();
+    	this.sprites[5][2].src = 'sprites/tortue/retournement_3_inv.png';
+
+    	//agiter
+    	this.sprites[6][0] = new Image();
+    	this.sprites[6][0].src = 'sprites/tortue/agite_1.png';
+
+    	this.sprites[6][1] = new Image();
+    	this.sprites[6][1].src = 'sprites/tortue/retournement_2.png';
+
+    	this.sprites[7][0] = new Image();
+    	this.sprites[7][0].src = 'sprites/tortue/agite_1.png';
+
+    	this.sprites[7][1] = new Image();
+    	this.sprites[7][1].src = 'sprites/tortue/retournement_2.png';
     }
 
     /**
@@ -427,6 +532,12 @@ class Tortue extends Entite{
             this.couleur = 'rgb(200, 200, 50)';
             this.timer = 300;
             this.saut(posBosse);
+            if(this.vitesse > 0){
+	        	this.catSpriteActif = 3;
+	        } else {
+	        	this.catSpriteActif = 2;
+	        }
+	        this.spriteActif = 0;
         } else {
             this.etatRenverse = false;
             this.timer = 30;
@@ -460,12 +571,15 @@ class Tortue extends Entite{
      */
     action() {
         this.timer -= 1;
+        this.horloge += 1;
+        //se met en colère
         if (this.etatRenverse && this.timer < 0) {
             this.etatRenverse = false;
             this.couleur = 'rgb(250, 150, 30)';
             this.vitesse = this.ancienneVitesse * 1.5;
             this.colere = true;
         }
+        //revient à l'état normal
         if (!this.etatRenverse && this.timer > 0) {
             this.vitesse = this.ancienneVitesse;
             this.couleur = 'rgb(50, 200, 50)';
@@ -477,9 +591,51 @@ class Tortue extends Entite{
      */
     deplacer() {
         if (this.timer > 270 || !this.etatRenverse) {
+        	//animation avancer
+        	if(!this.etatRenverse){
+	        	if(this.vitesse > 0){
+	        		this.catSpriteActif = 1;
+	        	} else {
+	        		this.catSpriteActif = 0;
+	        	}
+	        	if(this.horloge % 3 === 0) this.spriteActif = (this.spriteActif + 1) % 5;
+
+	        	//animation renverse
+	        	} else{
+	        		if(this.horloge % 6 === 0 && this.spriteActif < 4){
+	        			this.spriteActif = this.spriteActif + 1;
+	        		}
+	        	}
+	        //avancer
             this.velX += this.vitesse;
             this.posX += this.velX;
+        } else {
+        	if(this.catSpriteActif != 4 && this.spriteActif != 2){ //a finir
+        		this.anim_sortir();
+        	}
         }
+    }
+
+    anim_sortir(){
+    	//choisir le sens
+    	if(this.catSpriteActif === 2 || this.catSpriteActif === 3){
+    		if(this.vitesse > 0){
+        		this.catSpriteActif = 5;
+        	} else {
+        		this.catSpriteActif = 4;
+        	}
+			this.spriteActif = 0;
+    	}
+    	//tortue sort sa tête
+    	if(this.horloge % 300 === 0 && this.spriteActif < 1){
+			this.spriteActif = 1;
+	    } else if(this.horloge % 50 === 0 && this.spriteActif === 1){
+	    	this.spriteActif =  2;
+	    }
+    }
+
+    dessiner() {
+        ctx.drawImage(this.sprites[this.catSpriteActif][this.spriteActif], this.posX, this.posY - this.hauteur, this.largeur, this.hauteur);
     }
 }
 
@@ -604,7 +760,7 @@ class Plateforme {
         this.posX = unePosX;
         this.posY = unePosY;
         this.largeur = uneLargeur;
-        this.hauteur = canvas.height * 0.03;
+        this.hauteur = canvas.height * 0.036;
         this.couleur = 'rgb(150, 150, 150)';
         this.bosses = [];
     }
@@ -732,17 +888,17 @@ class Jeu {
      */
     initPlateforme() {
         //Première ligne
-        plateformes.push(new Plateforme(0, canvas.height - canvas.height / 3.7, canvas.width / 3))
-        plateformes.push(new Plateforme(canvas.width * 2 / 3, canvas.height - canvas.height / 3.7, canvas.width / 3))
+        plateformes.push(new Plateforme(0, canvas.height * 0.75, canvas.width * 0.34375))
+        plateformes.push(new Plateforme(canvas.width * 0.65625, canvas.height * 0.75, canvas.width * 0.34375))
 
         //deuxième ligne
-        plateformes.push(new Plateforme(0, canvas.height - canvas.height / 2.26, canvas.width / 10))
-        plateformes.push(new Plateforme(canvas.width - canvas.width / 10, canvas.height - canvas.height / 2.26, canvas.width / 10))
-        plateformes.push(new Plateforme((canvas.width - canvas.width / 1.87) / 2, canvas.height - canvas.height / 2.12, canvas.width / 1.87))
+        plateformes.push(new Plateforme(0, canvas.height * 0.5714, canvas.width * 0.125))
+        plateformes.push(new Plateforme(canvas.width - canvas.width * 0.125, canvas.height * 0.5714, canvas.width * 0.125))
+        plateformes.push(new Plateforme(canvas.width * 0.21875, canvas.height * 0.5357, canvas.width * 0.5625))
 
         //troisième ligne
-        plateformes.push(new Plateforme(0, canvas.height - canvas.height / 1.47, canvas.width / 2.3))
-        plateformes.push(new Plateforme(canvas.width - canvas.width / 2.3, canvas.height - canvas.height / 1.47, canvas.width / 2.3))
+        plateformes.push(new Plateforme(0, canvas.height * 0.3214, canvas.width * 0.4375))
+        plateformes.push(new Plateforme(canvas.width - canvas.width * 0.4375, canvas.height * 0.3214, canvas.width * 0.4375))
     }
 
     initEntite() {
@@ -767,10 +923,16 @@ class Jeu {
      * Boucle principal du jeu.
      */
     loop() {
+        //fond noir
         ctx.fillStyle = 'rgb(0, 0, 0)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);//fond
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        //sol
         ctx.fillStyle = 'rgb(91, 60, 17)';
-        ctx.fillRect(0, canvas.height - canvas.height / 9.33, canvas.width, canvas.height/9.33);//fond
+        ctx.fillRect(0, canvas.height - canvas.height / 9.33, canvas.width, canvas.height/9.33);
+
+        /*let fond = new Image();
+    	fond.src = 'sprites/fond/le_fond.png';
+        ctx.drawImage(fond, 0, 0, canvas.width, canvas.height);*/
 
         //Les plateformes
         plateformes.forEach(plat => {
@@ -794,7 +956,6 @@ class Jeu {
         //Les boules de feu
         boules.forEach(uneBoule => {
             if (!uneBoule.etat()) { //verifie si l'entite est morte
-                console.log("destruction")
                 boules.splice(boules.indexOf(uneBoule), 1);
             }
             uneBoule.mouvement(plateformes, persos);
@@ -827,9 +988,9 @@ class Jeu {
         	if(this.num === 0){
                 boules.push(new BouleDeFeu(30, canvas.height * 0.85, 1, 0));
             } else if(this.num === 1){
-                boules.push(new BouleDeFeu(30, canvas.height * 0.6, 1, 0));
+                boules.push(new BouleDeFeu(30, canvas.height * 0.65, 1, 0));
             }else if(this.num === 2){
-                boules.push(new BouleDeFeu(30, canvas.height * 0.4, 1, 0));
+                boules.push(new BouleDeFeu(30, canvas.height * 0.45, 1, 0));
             }else if(this.num === 3){
                 boules.push(new BouleDeFeu(30, canvas.height * 0.2, 1, 0));
             }
