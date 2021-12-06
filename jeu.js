@@ -11,9 +11,9 @@ class Entite {
         this.velY = 0;
         this.posX = 0;//Coordonnées du coin en bas à gauche
         this.posY = 0;
-        this.largeur = canvas.width / 16;
-        this.hauteur = canvas.height / 11;
-        this.vitesse = canvas.width * 0.0009;
+        this.largeur = canvas.width * 0.0625;
+        this.hauteur = canvas.height * 0.09375;
+        this.vitesse = canvas.width * 0.0008;
         this.couleur = 'rgb(200, 50, 50)';
         this.surLeSol = true;
         this.vie = 1;
@@ -120,8 +120,8 @@ class Entite {
      * @param lesPlateformes liste de toutes les plateformes
      */
     verifierSolEtPlateforme(lesPlateformes) {
-        if (this.posY > canvas.height - canvas.height / 9.33) {
-            this.posY = canvas.height - canvas.height / 9.33;
+        if (this.posY > canvas.height * 0.9285) {
+            this.posY = canvas.height * 0.9285;
             this.velY = 0;
             this.surLeSol = true;
         }
@@ -306,7 +306,7 @@ class Perso extends Entite {
      */
     saut() {
         if (this.surLeSol && this.velY === 0) {
-            this.velY = -9.5;
+            this.velY = -canvas.height * 0.021;
             this.surLeSol = false;
 
             if(this.vitesse > 0){
@@ -351,7 +351,7 @@ class Perso extends Entite {
             //modifie le sprite quand le personnage avance à droite
             if(this.surLeSol){
             	if(this.spriteActif < 9) this.spriteActif = 9;
-            	this.spriteActif = 9 + ((this.spriteActif - 8) % 5);
+            	if(horloge % 2 === 0) this.spriteActif = 9 + ((this.spriteActif - 8) % 5);
             } else {
             	this.spriteActif = 3; //saute vers la droite
             }
@@ -361,7 +361,7 @@ class Perso extends Entite {
             //modifie le sprite quand le personnage avance à gauche
             if(this.surLeSol){
             	if(this.spriteActif < 4) this.spriteActif = 4;
-            	this.spriteActif = 4 + (this.spriteActif - 3) % 5;
+            	if(horloge % 2 === 0) this.spriteActif = 4 + (this.spriteActif - 3) % 5;
             } else {
             	this.spriteActif = 2; //saute vers la gauche
             }
@@ -385,8 +385,8 @@ class Tortue extends Entite{
         super();
         this.posX = unePosX;
         this.posY = unePosY;
-        this.hauteur = canvas.height / 20;
-        this.vitesse = sens * Math.abs(canvas.width * 0.0007);
+        this.hauteur = canvas.height * 0.0625;
+        this.vitesse = sens * Math.abs(canvas.width * 0.0004);
         this.etatRenverse = false;
         this.vie = 2;
         this.couleur = 'rgb(50, 200, 50)';
@@ -778,8 +778,8 @@ class Plateforme {
      * Dessine la plateforme et ses éventuelles bosses.
      */
     dessiner() {
-        ctx.fillStyle = this.couleur;
-        ctx.fillRect(this.posX, this.posY - this.hauteur, this.largeur, this.hauteur);
+        //ctx.fillStyle = this.couleur;
+        //ctx.fillRect(this.posX, this.posY - this.hauteur, this.largeur, this.hauteur);
 
         //Dessiner les bosses.
         this.bosses.forEach(uneBosse => {
@@ -834,17 +834,28 @@ class Tuyau {
     constructor(unePosX, unePosY, unType, unSens) {
         this.posX = unePosX;
         this.posY = unePosY;
-        this.largeur = canvas.width/10;
-        this.hauteur = canvas.height / 15;
+        this.largeur = canvas.width/16;
+        this.hauteur = canvas.height / 14;
         this.couleur = 'rgb(0, 100, 0)';
         this.liaison;
         this.sens = unSens;//0 : tuyau à gauche; 1 : tuyau à droite
         this.type = unType;//0 : entrée; 1 : sortie
+        this.sprite = new Image();
+        this.initTuyau();
+    }
+
+    initTuyau(){
+        if(this.sens === 0){
+    	    this.sprite.src = 'sprites/tuyaux/tuyau_gauche.png';
+        } else {
+            this.sprite.src = 'sprites/tuyaux/tuyau_droit.png';
+        }
     }
 
     teleporter(uneEntite){
         if(this.type === 0){
             uneEntite.posY = this.liaison.posY;
+            uneEntite.posX = this.liaison.posX;
             if(this.sens === 0){
                 uneEntite.vitesse = Math.abs(uneEntite.vitesse);
             } else {
@@ -867,8 +878,7 @@ class Tuyau {
      * Dessine la bosse.
      */
      dessiner() {
-        ctx.fillStyle = this.couleur;
-        ctx.fillRect(this.posX, this.posY - this.hauteur, this.largeur, this.hauteur);
+        ctx.drawImage(this.sprite, this.posX, this.posY - this.hauteur, this.largeur, this.hauteur);
     }
 }
 
@@ -907,12 +917,12 @@ class Jeu {
 
     initTuyaux() {
         //tuyaux d'entrée
-        tuyaux.push(new Tuyau(0, canvas.height - canvas.height / 9.33, 0, 0));
-        tuyaux.push(new Tuyau(canvas.width - canvas.width/10, canvas.height - canvas.height / 9.33, 0, 1));
+        tuyaux.push(new Tuyau(0, canvas.height * 0.9241, 0, 0));
+        tuyaux.push(new Tuyau(canvas.width - canvas.width/16, canvas.height * 0.9241, 0, 1));
 
         //tuyaux de sortie
-        tuyaux.push(new Tuyau(0, canvas.height * 0.15, 1, 0));
-        tuyaux.push(new Tuyau(canvas.width - tuyaux[2].largeur, canvas.height * 0.15, 1, 1));
+        tuyaux.push(new Tuyau(canvas.width * 0.0625, canvas.height * 0.1384, 1, 0));
+        tuyaux.push(new Tuyau(canvas.width * 0.875, canvas.height * 0.1384, 1, 1));
 
         //liaison des tuyaux d'entrées et de sorties
         tuyaux[0].setLiaison(tuyaux[2]);
@@ -923,18 +933,13 @@ class Jeu {
      * Boucle principal du jeu.
      */
     loop() {
-        //fond noir
-        ctx.fillStyle = 'rgb(0, 0, 0)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        //sol
-        ctx.fillStyle = 'rgb(91, 60, 17)';
-        ctx.fillRect(0, canvas.height - canvas.height / 9.33, canvas.width, canvas.height/9.33);
+        horloge++;
 
-        /*let fond = new Image();
-    	fond.src = 'sprites/fond/le_fond.png';
-        ctx.drawImage(fond, 0, 0, canvas.width, canvas.height);*/
+        let fond = new Image();
+    	fond.src = 'sprites/fond/le_fond_clean.png';
+        ctx.drawImage(fond, 0, 0, canvas.width, canvas.height);
 
-        //Les plateformes
+        //Les bosses
         plateformes.forEach(plat => {
             plat.dessiner();
         });
@@ -975,9 +980,9 @@ class Jeu {
         this.num = Math.random();
         if (this.num < 0.003) {
             if(this.num % 2 === 0){
-                entites.push(new Tortue(tuyaux[2].posX, tuyaux[3].posY - 15, 1));
+                entites.push(new Tortue(tuyaux[2].posX, tuyaux[2].posY - 15, 1));
             } else {
-                entites.push(new Tortue(tuyaux[2].posX, tuyaux[3].posY - 15, -1));
+                entites.push(new Tortue(tuyaux[3].posX, tuyaux[3].posY - 15, -1));
             }
         }
 
@@ -1005,13 +1010,14 @@ class Jeu {
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 const touches_appuye = [];
-const friction = 0.75;
-const gravite = 0.4;
+const friction = 0.80;
+const gravite = canvas.height / 1200;
 const plateformes = [];
 const entites = [];
 const boules = [];
 const persos = [];
 const tuyaux = [];
+let horloge = 0;
 
 //énumération des touches
 const touche = {
