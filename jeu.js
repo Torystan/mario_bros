@@ -1,6 +1,205 @@
 //****************//
 //      class     //
 //****************//
+class chargerSprites {
+	constructor() {
+		this.chargerSpritesTortues();
+		this.chargerSpritesMario();
+	}
+
+	chargerSpritesTortues(){
+		for (var i = 0; i < 11; i++) {
+		 	spritesTortues[i] = new Array(5);
+		}
+
+		//avancer
+    	spritesTortues[0][0] = new Image();
+    	spritesTortues[0][0].src = 'sprites/tortue/marche_1.png';
+
+    	spritesTortues[0][1] = new Image();
+    	spritesTortues[0][1].src = 'sprites/tortue/marche_2.png';
+
+    	spritesTortues[0][2] = new Image();
+    	spritesTortues[0][2].src = 'sprites/tortue/marche_3.png';
+
+    	spritesTortues[0][3] = new Image();
+    	spritesTortues[0][3].src = 'sprites/tortue/marche_4.png';
+
+    	spritesTortues[0][4] = new Image();
+    	spritesTortues[0][4].src = 'sprites/tortue/marche_5.png';
+
+    	spritesTortues[1][0] = new Image();
+    	spritesTortues[1][0].src = 'sprites/tortue/marche_1_inv.png';
+
+    	spritesTortues[1][1] = new Image();
+    	spritesTortues[1][1].src = 'sprites/tortue/marche_2_inv.png';
+
+    	spritesTortues[1][2] = new Image();
+    	spritesTortues[1][2].src = 'sprites/tortue/marche_3_inv.png';
+
+    	spritesTortues[1][3] = new Image();
+    	spritesTortues[1][3].src = 'sprites/tortue/marche_4_inv.png';
+
+    	spritesTortues[1][4] = new Image();
+    	spritesTortues[1][4].src = 'sprites/tortue/marche_5_inv.png';
+
+    	//retournement
+    	spritesTortues[2][0] = new Image();
+    	spritesTortues[2][0].src = 'sprites/tortue/retournement_1.png';
+
+    	spritesTortues[2][1] = new Image();
+    	spritesTortues[2][1].src = 'sprites/tortue/retournement_2.png';
+
+    	spritesTortues[2][2] = new Image();
+    	spritesTortues[2][2].src = 'sprites/tortue/retournement_3.png';
+
+    	spritesTortues[2][3] = new Image();
+    	spritesTortues[2][3].src = 'sprites/tortue/sortir_1.png';
+
+    	spritesTortues[2][4] = new Image();
+    	spritesTortues[2][4].src = 'sprites/tortue/boule_1.png';
+
+    	spritesTortues[3][0] = new Image();
+    	spritesTortues[3][0].src = 'sprites/tortue/retournement_1_inv.png';
+
+    	spritesTortues[3][1] = new Image();
+    	spritesTortues[3][1].src = 'sprites/tortue/retournement_2_inv.png';
+
+    	spritesTortues[3][2] = new Image();
+    	spritesTortues[3][2].src = 'sprites/tortue/retournement_3_inv.png';
+
+    	spritesTortues[3][3] = new Image();
+    	spritesTortues[3][3].src = 'sprites/tortue/sortir_1_inv.png';
+
+    	spritesTortues[3][4] = new Image();
+    	spritesTortues[3][4].src = 'sprites/tortue/boule_1_inv.png';
+
+    	//sort
+    	spritesTortues[4][0] = new Image();
+    	spritesTortues[4][0].src = 'sprites/tortue/boule_1.png';
+
+    	spritesTortues[4][1] = new Image();
+    	spritesTortues[4][1].src = 'sprites/tortue/sortir_1.png';
+
+    	spritesTortues[4][2] = new Image();
+    	spritesTortues[4][2].src = 'sprites/tortue/retournement_3.png';
+
+    	spritesTortues[5][0] = new Image();
+    	spritesTortues[5][0].src = 'sprites/tortue/boule_1_inv.png';
+
+    	spritesTortues[5][1] = new Image();
+    	spritesTortues[5][1].src = 'sprites/tortue/sortir_1_inv.png';
+
+    	spritesTortues[5][2] = new Image();
+    	spritesTortues[5][2].src = 'sprites/tortue/retournement_3_inv.png';
+
+    	//agiter
+    	spritesTortues[6][0] = new Image();
+    	spritesTortues[6][0].src = 'sprites/tortue/agite_1.png';
+
+    	spritesTortues[6][1] = new Image();
+    	spritesTortues[6][1].src = 'sprites/tortue/retournement_2.png';
+
+    	spritesTortues[7][0] = new Image();
+    	spritesTortues[7][0].src = 'sprites/tortue/agite_1_inv.png';
+
+    	spritesTortues[7][1] = new Image();
+    	spritesTortues[7][1].src = 'sprites/tortue/retournement_2_inv.png';
+
+    	//revenir dans la coquille
+    	spritesTortues[8][0] = new Image();
+    	spritesTortues[8][0].src = 'sprites/tortue/sorti_1.png';
+
+    	spritesTortues[8][1] = new Image();
+    	spritesTortues[8][1].src = 'sprites/tortue/sorti_2.png';
+
+    	spritesTortues[8][2] = new Image();
+    	spritesTortues[8][2].src = 'sprites/tortue/sorti_3.png';
+
+    	spritesTortues[8][3] = new Image();
+    	spritesTortues[8][3].src = 'sprites/tortue/sorti_4.png';
+
+    	spritesTortues[8][4] = new Image();
+    	spritesTortues[8][4].src = 'sprites/tortue/sorti_5.png';
+
+    	spritesTortues[9][0] = new Image();
+    	spritesTortues[9][0].src = 'sprites/tortue/sorti_1_inv.png';
+
+    	spritesTortues[9][1] = new Image();
+    	spritesTortues[9][1].src = 'sprites/tortue/sorti_2_inv.png';
+
+    	spritesTortues[9][2] = new Image();
+    	spritesTortues[9][2].src = 'sprites/tortue/sorti_3_inv.png';
+
+    	spritesTortues[9][3] = new Image();
+    	spritesTortues[9][3].src = 'sprites/tortue/sorti_4_inv.png';
+
+    	spritesTortues[9][4] = new Image();
+    	spritesTortues[9][4].src = 'sprites/tortue/sorti_5_inv.png';
+
+    	spritesTortues[10][0] = new Image();
+    	spritesTortues[10][0].src = 'sprites/tortue/revivre_1.png';
+
+    	spritesTortues[10][1] = new Image();
+    	spritesTortues[10][1].src = 'sprites/tortue/revivre_2.png';
+
+    	spritesTortues[10][2] = new Image();
+    	spritesTortues[10][2].src = 'sprites/tortue/revivre_3.png';
+
+    	spritesTortues[10][3] = new Image();
+    	spritesTortues[10][3].src = 'sprites/tortue/revivre_4.png';
+
+    	spritesTortues[10][4] = new Image();
+    	spritesTortues[10][4].src = 'sprites/tortue/revivre_5.png';
+
+    	spritesTortues[10][5] = new Image();
+    	spritesTortues[10][5].src = 'sprites/tortue/revivre_6.png';
+	}
+
+	chargerSpritesMario(){
+		spritesMario[0] = new Image();
+    	spritesMario[0].src = 'sprites/mario/mario_statique.png';
+
+    	spritesMario[1] = new Image();
+    	spritesMario[1].src = 'sprites/mario/mario_statique_inv.png';
+
+    	spritesMario[2] = new Image();
+    	spritesMario[2].src = 'sprites/mario/mario_saute.png';
+
+    	spritesMario[3] = new Image();
+    	spritesMario[3].src = 'sprites/mario/mario_saute_inv.png';
+
+    	spritesMario[4] = new Image();
+    	spritesMario[4].src = 'sprites/mario/mario_marche_1.png';
+
+    	spritesMario[5] = new Image();
+    	spritesMario[5].src = 'sprites/mario/mario_marche_2.png';
+
+    	spritesMario[6] = new Image();
+    	spritesMario[6].src = 'sprites/mario/mario_marche_3.png';
+
+    	spritesMario[7] = new Image();
+    	spritesMario[7].src = 'sprites/mario/mario_marche_4.png';
+
+    	spritesMario[8] = new Image();
+    	spritesMario[8].src = 'sprites/mario/mario_marche_5.png';
+
+    	spritesMario[9] = new Image();
+    	spritesMario[9].src = 'sprites/mario/mario_marche_1_inv.png';
+
+    	spritesMario[10] = new Image();
+    	spritesMario[10].src = 'sprites/mario/mario_marche_2_inv.png';
+
+    	spritesMario[11] = new Image();
+    	spritesMario[11].src = 'sprites/mario/mario_marche_3_inv.png';
+
+    	spritesMario[12] = new Image();
+    	spritesMario[12].src = 'sprites/mario/mario_marche_4_inv.png';
+
+    	spritesMario[13] = new Image();
+    	spritesMario[13].src = 'sprites/mario/mario_marche_5_inv.png';
+	}
+}
 
 class Entite {
     constructor() {
@@ -253,52 +452,6 @@ class Perso extends Entite {
         this.posX = unePosX;
         this.posY = unePosY;
         this.spriteActif = 0;
-        this.sprites = [];
-        this.initSprites();
-    }
-
-    initSprites(){
-    	this.sprites[0] = new Image();
-    	this.sprites[0].src = 'sprites/mario/mario_statique.png';
-
-    	this.sprites[1] = new Image();
-    	this.sprites[1].src = 'sprites/mario/mario_statique_inv.png';
-
-    	this.sprites[2] = new Image();
-    	this.sprites[2].src = 'sprites/mario/mario_saute.png';
-
-    	this.sprites[3] = new Image();
-    	this.sprites[3].src = 'sprites/mario/mario_saute_inv.png';
-
-    	this.sprites[4] = new Image();
-    	this.sprites[4].src = 'sprites/mario/mario_marche_1.png';
-
-    	this.sprites[5] = new Image();
-    	this.sprites[5].src = 'sprites/mario/mario_marche_2.png';
-
-    	this.sprites[6] = new Image();
-    	this.sprites[6].src = 'sprites/mario/mario_marche_3.png';
-
-    	this.sprites[7] = new Image();
-    	this.sprites[7].src = 'sprites/mario/mario_marche_4.png';
-
-    	this.sprites[8] = new Image();
-    	this.sprites[8].src = 'sprites/mario/mario_marche_5.png';
-
-    	this.sprites[9] = new Image();
-    	this.sprites[9].src = 'sprites/mario/mario_marche_1_inv.png';
-
-    	this.sprites[10] = new Image();
-    	this.sprites[10].src = 'sprites/mario/mario_marche_2_inv.png';
-
-    	this.sprites[11] = new Image();
-    	this.sprites[11].src = 'sprites/mario/mario_marche_3_inv.png';
-
-    	this.sprites[12] = new Image();
-    	this.sprites[12].src = 'sprites/mario/mario_marche_4_inv.png';
-
-    	this.sprites[13] = new Image();
-    	this.sprites[13].src = 'sprites/mario/mario_marche_5_inv.png';
     }
 
     /**
@@ -376,7 +529,7 @@ class Perso extends Entite {
      * Dessine une entité.
      */
     dessiner() {
-        ctx.drawImage(this.sprites[this.spriteActif], this.posX, this.posY - this.hauteur, this.largeur, this.hauteur);
+        ctx.drawImage(spritesMario[this.spriteActif], this.posX, this.posY - this.hauteur, this.largeur, this.hauteur);
     }
 }
 
@@ -395,110 +548,12 @@ class Tortue extends Entite{
         this.ancienneVitesse = this.vitesse;
         this.catSpriteActif = 0;
         this.spriteActif = 0;
-        this.sprites = [];
-        this.initSprites();
-        this.horloge = 0;
-    }
-
-    initSprites(){
-    	for (var i = 0; i < 10; i++)
-		{
-		 	this.sprites[i] = new Array(5);
-		}
-
-		//avancer
-    	this.sprites[0][0] = new Image();
-    	this.sprites[0][0].src = 'sprites/tortue/marche_1.png';
-
-    	this.sprites[0][1] = new Image();
-    	this.sprites[0][1].src = 'sprites/tortue/marche_2.png';
-
-    	this.sprites[0][2] = new Image();
-    	this.sprites[0][2].src = 'sprites/tortue/marche_3.png';
-
-    	this.sprites[0][3] = new Image();
-    	this.sprites[0][3].src = 'sprites/tortue/marche_4.png';
-
-    	this.sprites[0][4] = new Image();
-    	this.sprites[0][4].src = 'sprites/tortue/marche_5.png';
-
-    	this.sprites[1][0] = new Image();
-    	this.sprites[1][0].src = 'sprites/tortue/marche_1_inv.png';
-
-    	this.sprites[1][1] = new Image();
-    	this.sprites[1][1].src = 'sprites/tortue/marche_2_inv.png';
-
-    	this.sprites[1][2] = new Image();
-    	this.sprites[1][2].src = 'sprites/tortue/marche_3_inv.png';
-
-    	this.sprites[1][3] = new Image();
-    	this.sprites[1][3].src = 'sprites/tortue/marche_4_inv.png';
-
-    	this.sprites[1][4] = new Image();
-    	this.sprites[1][4].src = 'sprites/tortue/marche_5_inv.png';
-
-    	//retournement
-    	this.sprites[2][0] = new Image();
-    	this.sprites[2][0].src = 'sprites/tortue/retournement_1.png';
-
-    	this.sprites[2][1] = new Image();
-    	this.sprites[2][1].src = 'sprites/tortue/retournement_2.png';
-
-    	this.sprites[2][2] = new Image();
-    	this.sprites[2][2].src = 'sprites/tortue/retournement_3.png';
-
-    	this.sprites[2][3] = new Image();
-    	this.sprites[2][3].src = 'sprites/tortue/sortir_1.png';
-
-    	this.sprites[2][4] = new Image();
-    	this.sprites[2][4].src = 'sprites/tortue/boule_1.png';
-
-    	this.sprites[3][0] = new Image();
-    	this.sprites[3][0].src = 'sprites/tortue/retournement_1_inv.png';
-
-    	this.sprites[3][1] = new Image();
-    	this.sprites[3][1].src = 'sprites/tortue/retournement_2_inv.png';
-
-    	this.sprites[3][2] = new Image();
-    	this.sprites[3][2].src = 'sprites/tortue/retournement_3_inv.png';
-
-    	this.sprites[3][3] = new Image();
-    	this.sprites[3][3].src = 'sprites/tortue/sortir_1_inv.png';
-
-    	this.sprites[3][4] = new Image();
-    	this.sprites[3][4].src = 'sprites/tortue/boule_1_inv.png';
-
-    	//sort
-    	this.sprites[4][0] = new Image();
-    	this.sprites[4][0].src = 'sprites/tortue/boule_1.png';
-
-    	this.sprites[4][1] = new Image();
-    	this.sprites[4][1].src = 'sprites/tortue/sortir_1.png';
-
-    	this.sprites[4][2] = new Image();
-    	this.sprites[4][2].src = 'sprites/tortue/retournement_3.png';
-
-    	this.sprites[5][0] = new Image();
-    	this.sprites[5][0].src = 'sprites/tortue/boule_1_inv.png';
-
-    	this.sprites[5][1] = new Image();
-    	this.sprites[5][1].src = 'sprites/tortue/sortir_1_inv.png';
-
-    	this.sprites[5][2] = new Image();
-    	this.sprites[5][2].src = 'sprites/tortue/retournement_3_inv.png';
-
-    	//agiter
-    	this.sprites[6][0] = new Image();
-    	this.sprites[6][0].src = 'sprites/tortue/agite_1.png';
-
-    	this.sprites[6][1] = new Image();
-    	this.sprites[6][1].src = 'sprites/tortue/retournement_2.png';
-
-    	this.sprites[7][0] = new Image();
-    	this.sprites[7][0].src = 'sprites/tortue/agite_1.png';
-
-    	this.sprites[7][1] = new Image();
-    	this.sprites[7][1].src = 'sprites/tortue/retournement_2.png';
+        this.catSpriteActif2 = 0;
+        this.spriteActif2 = 0;
+        this.regHorloge = 0;
+        this.bAnimSortir = false;
+        this.bAnimAgiter = false;
+        this.bAnimRelever = false;
     }
 
     /**
@@ -530,7 +585,7 @@ class Tortue extends Entite{
         if (!this.etatRenverse && this.timer < 0) {
             this.etatRenverse = true;
             this.couleur = 'rgb(200, 200, 50)';
-            this.timer = 300;
+            this.timer = 400;
             this.saut(posBosse);
             if(this.vitesse > 0){
 	        	this.catSpriteActif = 3;
@@ -562,7 +617,7 @@ class Tortue extends Entite{
         } else {
             this.vitesse = 0;
         }
-        this.velY = -6;
+        this.velY = -canvas.height * 0.013;
         this.surLeSol = false;
     }
 
@@ -571,18 +626,33 @@ class Tortue extends Entite{
      */
     action() {
         this.timer -= 1;
-        this.horloge += 1;
         //se met en colère
         if (this.etatRenverse && this.timer < 0) {
             this.etatRenverse = false;
             this.couleur = 'rgb(250, 150, 30)';
             this.vitesse = this.ancienneVitesse * 1.5;
             this.colere = true;
+            this.bAnimAgiter = false;
+            this.bAnimRelever = false;
+        	this.regHorloge = 0;
         }
         //revient à l'état normal
         if (!this.etatRenverse && this.timer > 0) {
             this.vitesse = this.ancienneVitesse;
             this.couleur = 'rgb(50, 200, 50)';
+            this.bAnimAgiter = false;
+            this.bAnimSortir = false;
+            this.bAnimRelever = false;
+        	this.regHorloge = 0;
+        }
+        if(this.bAnimSortir){
+        	this.anim_sortir();
+        }
+        if(this.bAnimAgiter){
+        	this.anim_agiter();
+        }
+        if(this.bAnimRelever){
+        	this.anim_relever();
         }
     }
 
@@ -590,7 +660,7 @@ class Tortue extends Entite{
      * Déplace l'entitée vers la droite ou la gauche.
      */
     deplacer() {
-        if (this.timer > 270 || !this.etatRenverse) {
+        if (this.timer > 370 || !this.etatRenverse) {
         	//animation avancer
         	if(!this.etatRenverse){
 	        	if(this.vitesse > 0){
@@ -598,11 +668,11 @@ class Tortue extends Entite{
 	        	} else {
 	        		this.catSpriteActif = 0;
 	        	}
-	        	if(this.horloge % 3 === 0) this.spriteActif = (this.spriteActif + 1) % 5;
+	        	if(horloge % 3 === 0) this.spriteActif = (this.spriteActif + 1) % 5;
 
 	        	//animation renverse
 	        	} else{
-	        		if(this.horloge % 6 === 0 && this.spriteActif < 4){
+	        		if(horloge % 6 === 0 && this.spriteActif < 4){
 	        			this.spriteActif = this.spriteActif + 1;
 	        		}
 	        	}
@@ -610,32 +680,115 @@ class Tortue extends Entite{
             this.velX += this.vitesse;
             this.posX += this.velX;
         } else {
-        	if(this.catSpriteActif != 4 && this.spriteActif != 2){ //a finir
-        		this.anim_sortir();
+        	if(this.catSpriteActif == 3 || this.catSpriteActif == 2){ //a finir
+        		this.bAnimSortir = true;
         	}
         }
     }
 
+    /**
+     * Animation tortue qui sort de sa coquille
+     */
     anim_sortir(){
     	//choisir le sens
-    	if(this.catSpriteActif === 2 || this.catSpriteActif === 3){
-    		if(this.vitesse > 0){
-        		this.catSpriteActif = 5;
-        	} else {
-        		this.catSpriteActif = 4;
-        	}
-			this.spriteActif = 0;
+		if(this.vitesse > 0){
+    		this.catSpriteActif = 5;
+    	} else {
+    		this.catSpriteActif = 4;
     	}
+		this.spriteActif = 0;
     	//tortue sort sa tête
-    	if(this.horloge % 300 === 0 && this.spriteActif < 1){
+    	this.saveHorloge();
+    	//console.log(horloge - this.regHorloge);
+    	if(horloge - this.regHorloge > 30){
 			this.spriteActif = 1;
-	    } else if(this.horloge % 50 === 0 && this.spriteActif === 1){
-	    	this.spriteActif =  2;
+	    }
+	    if(horloge - this.regHorloge > 60){
+	    	this.spriteActif = 2;
+	    }
+	    if(horloge - this.regHorloge > 100){
+	    		this.spriteActif = 0;
+				this.bAnimSortir = false;
+	    		this.bAnimAgiter = true;
+	    		this.regHorloge = 0;
 	    }
     }
 
+    /**
+     * Animation tortue retourné qui s'agite
+     */
+    anim_agiter(){
+    	this.saveHorloge();
+		//choisir le sens
+		if(this.vitesse > 0){
+    		this.catSpriteActif = 7;
+    	} else {
+    		this.catSpriteActif = 6;
+    	}
+    	if(horloge % 60 === 0){
+    		this.spriteActif = 0;
+    	} else if(horloge % 30 === 0){
+    		this.spriteActif = 1;
+    	}
+    	if(horloge - this.regHorloge > 180){
+			this.bAnimSortir = false;
+			this.bAnimAgiter = false;
+            this.bAnimRelever = true;
+            this.regHorloge = 0;
+	    }
+    }
+
+    anim_relever(){
+    	this.saveHorloge();
+    	//choisir le sens
+		if(this.vitesse > 0){
+    		this.catSpriteActif2 = 9;
+    		this.catSpriteActif = 10;
+    	} else {
+    		this.catSpriteActif2 = 8;
+    		this.catSpriteActif = 10;
+    	}
+    	console.log(horloge - this.regHorloge)
+    	this.spriteActif2 = 0;
+    	this.spriteActif = 0;
+    	if(horloge - this.regHorloge > 20){
+			this.spriteActif2 = 1;
+			this.spriteActif = 1;
+	    }
+	    if(horloge - this.regHorloge > 30){
+			this.spriteActif = 2;
+	    }
+	    if(horloge - this.regHorloge > 40){
+			this.spriteActif2 = 2;
+			this.spriteActif = 3;
+	    }
+	    if(horloge - this.regHorloge > 50){
+			this.spriteActif2 = 3;
+			this.spriteActif = 4;
+	    }
+	    if(horloge - this.regHorloge > 60){
+	    	this.spriteActif2 = 4;
+			this.spriteActif = 5;
+	    }
+    }
+
+    saveHorloge(){
+    	if(this.regHorloge === 0){
+    		this.regHorloge = horloge;
+    	}
+    }
+
     dessiner() {
-        ctx.drawImage(this.sprites[this.catSpriteActif][this.spriteActif], this.posX, this.posY - this.hauteur, this.largeur, this.hauteur);
+    	//console.log("cat : ", this.catSpriteActif, " actif : ", this.spriteActif);
+        ctx.drawImage(spritesTortues[this.catSpriteActif][this.spriteActif], this.posX, this.posY - this.hauteur, this.largeur, this.hauteur);
+
+        if(this.bAnimRelever){
+        	if(this.vitesse > 0){
+        		ctx.drawImage(spritesTortues[this.catSpriteActif2][this.spriteActif2], this.posX - this.largeur, this.posY - this.hauteur, this.largeur, this.hauteur);
+        	} else {
+        		ctx.drawImage(spritesTortues[this.catSpriteActif2][this.spriteActif2], this.posX + this.largeur, this.posY - this.hauteur, this.largeur, this.hauteur);
+        	}
+        }
     }
 }
 
@@ -888,6 +1041,7 @@ class Jeu {
         this.initPlateforme()
         this.initEntite();
         this.initTuyaux();
+        this.initSprites();
         window.addEventListener('keyup', keyHandler);
         window.addEventListener('keydown', keyHandler);
         window.setInterval(this.loop, 14);
@@ -929,15 +1083,19 @@ class Jeu {
         tuyaux[1].setLiaison(tuyaux[3]);
     }
 
+    initSprites(){
+    	let sprites = new chargerSprites();
+    	spriteFond.src = 'sprites/fond/le_fond_clean.png';
+    }
+
     /**
      * Boucle principal du jeu.
      */
     loop() {
         horloge++;
 
-        let fond = new Image();
-    	fond.src = 'sprites/fond/le_fond_clean.png';
-        ctx.drawImage(fond, 0, 0, canvas.width, canvas.height);
+        //Le fond
+        ctx.drawImage(spriteFond, 0, 0, canvas.width, canvas.height);
 
         //Les bosses
         plateformes.forEach(plat => {
@@ -978,12 +1136,13 @@ class Jeu {
 
         //Création des tortues
         this.num = Math.random();
-        if (this.num < 0.003) {
+        if (/*this.num < 0.003 &&*/ boolTest) {
             if(this.num % 2 === 0){
                 entites.push(new Tortue(tuyaux[2].posX, tuyaux[2].posY - 15, 1));
             } else {
                 entites.push(new Tortue(tuyaux[3].posX, tuyaux[3].posY - 15, -1));
             }
+            boolTest = false;
         }
 
         //Création des boules de feu
@@ -1018,7 +1177,10 @@ const boules = [];
 const persos = [];
 const tuyaux = [];
 let horloge = 0;
-
+let spritesTortues = [];
+let spritesMario = [];
+let spriteFond = new Image();
+let boolTest = true;
 //énumération des touches
 const touche = {
     DROITE: 39,
