@@ -5,6 +5,7 @@ class chargerSprites {
 	constructor() {
 		this.chargerSpritesTortues();
 		this.chargerSpritesMario();
+        this.chargerSpritesBosse();
 	}
 
 	chargerSpritesTortues(){
@@ -198,6 +199,17 @@ class chargerSprites {
 
     	spritesMario[13] = new Image();
     	spritesMario[13].src = 'sprites/mario/mario_marche_5_inv.png';
+	}
+
+    chargerSpritesBosse(){
+		spritesBosse[0] = new Image();
+    	spritesBosse[0].src = 'sprites/bosse/droit.png';
+
+    	spritesBosse[1] = new Image();
+    	spritesBosse[1].src = 'sprites/bosse/centre.png';
+
+    	spritesBosse[2] = new Image();
+    	spritesBosse[2].src = 'sprites/bosse/gauche.png';
 	}
 }
 
@@ -429,11 +441,13 @@ class Entite {
      */
     mouvement(lesPlateformes, lesEntites, lesTuyaux) {
         this.deplacer();
-        this.frictionEtGravite();
         this.teleportationBords();
-        this.verifierEntites(lesEntites);
-        this.verifierSolEtPlateforme(lesPlateformes);
-        this.verifierTuyaux(lesTuyaux);
+        if(this.vie > 0){
+            this.frictionEtGravite();
+            this.verifierEntites(lesEntites);
+            this.verifierSolEtPlateforme(lesPlateformes);
+            this.verifierTuyaux(lesTuyaux);
+        }
         this.action();
     }
 
@@ -950,9 +964,10 @@ class Bosse {
     constructor(unePosX, unePosY, valPos, bordGauchePlat, bordDroitPlat) {
         this.posX = unePosX - 30;
         this.posY = unePosY;
-        this.largeur = 60;
-        this.hauteur = canvas.height * 0.03;
+        this.largeur = canvas.width * 0.0625;
+        this.hauteur = canvas.height / 14;
         this.couleur = 'rgb(50, 50, 250)';
+        this.valPos = valPos;
         this.decalerX(valPos, bordGauchePlat, bordDroitPlat);
     }
 
@@ -967,10 +982,8 @@ class Bosse {
     decalerX(val, leBordGauchePlat, leBordDroitPlat) {
         if (val === valBosse.BORD_GAUCHE) {
             this.posX = leBordGauchePlat;
-            this.largeur = 30
         } else if (val === valBosse.BORD_DROIT) {
-            this.posX = leBordDroitPlat - 30;
-            this.largeur = 30
+            this.posX = leBordDroitPlat - this.largeur;
         }
     }
 
@@ -978,8 +991,7 @@ class Bosse {
      * Dessine la bosse.
      */
     dessiner() {
-        ctx.fillStyle = this.couleur;
-        ctx.fillRect(this.posX, this.posY - this.hauteur, this.largeur, this.hauteur);
+        ctx.drawImage(spritesBosse[this.valPos-1], this.posX, this.posY - this.hauteur, this.largeur, this.hauteur);
     }
 }
 
@@ -1179,6 +1191,7 @@ const tuyaux = [];
 let horloge = 0;
 let spritesTortues = [];
 let spritesMario = [];
+let spritesBosse = [];
 let spriteFond = new Image();
 let boolTest = true;
 //énumération des touches
