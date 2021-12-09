@@ -1287,10 +1287,10 @@ class Plateforme {
 
 class Bosse {
     constructor(unePosX, unePosY, valPos, bordGauchePlat, bordDroitPlat) {
-        this.posX = unePosX - this.largeur / 2;
-        this.posY = unePosY + 1;
         this.largeur = canvas.width * 0.0625;
         this.hauteur = canvas.height / 14;
+	this.posX = unePosX - this.largeur / 2;
+        this.posY = unePosY + 1;
         this.couleur = 'rgb(50, 50, 250)';
         this.valPos = valPos;
         this.decalerX(valPos, bordGauchePlat, bordDroitPlat);
