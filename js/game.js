@@ -617,9 +617,9 @@ class Entite {
      */
     declencherBosse(unePlateforme) {
         var valUneBosse = valBosse.CENTRE;
-        if (this.posX + this.largeur / 2 < unePlateforme.posX + 30) {
+        if (this.posX + this.largeur / 2 < unePlateforme.posX + (canvas.width * 0.0625)/2) {
             valUneBosse = valBosse.BORD_GAUCHE;
-        } else if (this.posX + this.largeur / 2 > unePlateforme.posX + unePlateforme.largeur - 30) {
+        } else if (this.posX + this.largeur / 2 > unePlateforme.posX + unePlateforme.largeur - (canvas.width * 0.0625)/2) {
             valUneBosse = valBosse.BORD_DROIT;
         }
         var nouvelleBosse = new Bosse(this.posX + this.largeur / 2, unePlateforme.posY, valUneBosse, unePlateforme.posX, unePlateforme.posX + unePlateforme.largeur);
