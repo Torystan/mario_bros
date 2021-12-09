@@ -4,6 +4,7 @@
 	// Global
 	//
 	
+	var body = document.querySelector('body');
 	var modal = document.querySelector('#modal');
 	var modalBorder = document.querySelector('#modal-border');
 	var modalOpen = document.querySelector('#modal-open');
@@ -19,6 +20,7 @@
 	 * @returns {undefined}.
 	 */
 	function startGame() {
+		body.classList.add('no-scroll');
 		modal.classList.remove('is-hidden');
 		modal.classList.add('is-visible');
 		keepRatio();
@@ -31,6 +33,7 @@
 	 * @returns {undefined}.
 	 */
 	function endGame() {
+		body.classList.remove('no-scroll');
 		modal.classList.remove('is-visible');
 		modal.classList.add('is-hidden');
 		jeu.resetAll();
