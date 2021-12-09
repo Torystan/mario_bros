@@ -1287,7 +1287,7 @@ class Plateforme {
 
 class Bosse {
     constructor(unePosX, unePosY, valPos, bordGauchePlat, bordDroitPlat) {
-        this.posX = unePosX - 30;
+        this.posX = unePosX - this.largeur / 2;
         this.posY = unePosY + 1;
         this.largeur = canvas.width * 0.0625;
         this.hauteur = canvas.height / 14;
