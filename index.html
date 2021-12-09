@@ -1,11 +1,261 @@
-<html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="style.css"/>
-    </head>
-    <body>
-        <canvas id="canvas" width="512" height="448"></canvas>
-    </body>
-    <foot>
-        <script src="jeu.js"></script>
-    </foot>
+<!DOCTYPE HTML>
+<html lang="fr">
+	<head>
+		<title>IHM</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" type="text/css" href="css/styles.css">
+	</head>
+	<body>
+		<header>
+			<h1>Projet IHM</h1>
+			<div id="bezel">
+				<img id="modal-open" src="img/play.gif" alt="ouvrir modal">
+			</div>
+			<div id="modal">
+				<div id="modal-border">
+					<i id="modal-close"></i>
+					<canvas id="game" height="224" width="256"></canvas>
+				</div>
+			</div>
+		</header>
+		<main>
+			<section id="introduction">
+				<div class="center">
+					<h2>Introduction</h2>
+					<div class="information">
+						<h3>Description</h3>
+						<div class="information-content">
+							<p>Mario Bros. (マリオブラザーズ, Mario Burazāzu?) est un jeu d'arcade développé et édité par Nintendo en 1983. Il a été conçu par Shigeru Miyamoto comme la suite de Donkey Kong, avec lequel il constitue un des premiers jeux de plates-formes jamais créés. Le jeu met en scène le plombier Mario — dénommé « Jumpman » auparavant dans Donkey Kong — qui doit, avec son frère Luigi, combattre des créatures apparaissant dans les égouts de New York.</p>
+							<p>Boudé des salles d'arcade à sa sortie, Mario Bros. trouve le succès en <mark>1986 avec sa réédition sur Nintendo Entertainment System (NES)</mark> en se vendant à plus de 2,27 millions d’exemplaires dans le monde sur cette seule console. Le jeu a depuis été réédité sur de multiples plates-formes, notamment sur Game Boy Advance, ce qui lui valut des critiques lassées de la presse spécialisée, qui loue néanmoins l’efficacité du gameplay.</p>
+							<p>Source : <a class="link" href="https://fr.wikipedia.org/wiki/Mario_Bros." title="Afficher la page Wikipedia">Wikipedia</a></p>
+						</div>
+					</div>
+					<div class="information">
+						<h3>Historique</h3>
+						<div class="information-content">
+							<p>Il existe de nombreuses version de Mario Bros. disponibles sur plusieurs plate-formes :</p>
+							<table>
+								<thead>
+									<tr>
+										<th>Plates-formes</th>
+										<th>Dates de sortie</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Arcade</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_japan.png" alt="Drapeau Japon"> 14 juillet 1983</li>
+												<li><img class="flag" src="img/flag_usa.png" alt="Drapeau Etats-unis"> 20 juillet 1983</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td>NES</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_japan.png" alt="Drapeau Japon"> 9 septembre 1983</li>
+												<li><img class="flag" src="img/flag_usa.png" alt="Drapeau Etats-Unis"> <mark>20 juin 1986</mark></li>
+												<li><img class="flag" src="img/flag_europe.png" alt="Drapeau Europe"> 1er septembre 1986</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td>Atari 2600</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_usa.png" alt="Drapeau Etats-Unis"> décembre 1983</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td>Atari 5200</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_usa.png" alt="Drapeau Etats-Unis"> décembre 1983</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td>PC-8001</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_japan.png" alt="Drapeau Japon"> février 1986</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td>Nintendo PlayChoice-10</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_usa.png" alt="Drapeau Etats-Unis"> août 1986</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td>Amstrad CPC</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_europe.png" alt="Drapeau Europe"> 19 juin 1987</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td>Commodore 64</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_europe.png" alt="Drapeau Europe"> 1987</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td>ZX Spectrum</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_europe.png" alt="Drapeau Europe"> 1987</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td>Atari 8-bit</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_usa.png" alt="Drapeau Etats-Unis"> 22 novembre 1988</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td>Atari 7800</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_usa.png" alt="Drapeau Etats-Unis"> décembre 1988</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td>e-Reader</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_usa.png" alt="Drapeau Etats-Unis"> 11 novembre 2002</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td>Game Boy Advance</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_japan.png" alt="Drapeau Japon"> 21 mai 2004</li>
+												<li><img class="flag" src="img/flag_europe.png" alt="Drapeau Europe"> 22 mai 2004</li>
+												<li><img class="flag" src="img/flag_australia.png" alt="Drapeau Australie"> 23 mai 2004</li>
+												<li><img class="flag" src="img/flag_usa.png" alt="Drapeau Etats-Unis"> 24 mai 2004</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td>Virtual Console (Wii)</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_usa.png" alt="Drapeau Etats-Unis"> 19 novembre 2006</li>
+												<li><img class="flag" src="img/flag_australia.png" alt="Drapeau Australie"> 7 décembre 2006</li>
+												<li><img class="flag" src="img/flag_europe.png" alt="Drapeau Europe"> 8 décembre 2006</li>
+												<li><img class="flag" src="img/flag_japan.png" alt="Drapeau Japon"> 12 décembre 2006</li>
+												<li><img class="flag" src="img/flag_south_korea.png" alt="Drapeau Corée du Sud"> 30 décembre 2008</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td>Virtual Console (3DS)</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_japan.png" alt="Drapeau Japon"> 8 mai 2013</li>
+												<li><img class="flag" src="img/flag_europe.png" alt="Drapeau Europe"> 9 janvier 2014</li>
+												<li><img class="flag" src="img/flag_australia.png" alt="Drapeau Australie"> 9 janvier 2014</li>
+												<li><img class="flag" src="img/flag_usa.png" alt="Drapeau Etats-Unis"> 30 janvier 2014</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td>Virtual Console (Wii U)</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_japan.png" alt="Drapeau Japon"> 29 mai 2013</li>
+												<li><img class="flag" src="img/flag_usa.png" alt="Drapeau Etats-Unis"> 20 juin 2013</li>
+												<li><img class="flag" src="img/flag_europe.png" alt="Drapeau Europe"> 20 juin 2013</li>
+												<li><img class="flag" src="img/flag_australia.png" alt="Drapeau Australie"> 20 juin 2013</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td>NES Classic Edition</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_japan.png" alt="Drapeau Japon"> 10 novembre 2016</li>
+												<li><img class="flag" src="img/flag_australia.png" alt="Drapeau Australie"> 10 novembre 2016</li>
+												<li><img class="flag" src="img/flag_usa.png" alt="Drapeau Etats-Unis"> 11 novembre 2016</li>
+												<li><img class="flag" src="img/flag_europe.png" alt="Drapeau Europe"> 11 novembre 2016</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td>Nintendo Switch (Arcade Archives)</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_japan.png" alt="Drapeau Japon"> 27 septembre 2017</li>
+												<li><img class="flag" src="img/flag_usa.png" alt="Drapeau Etats-Unis"> 27 septembre 2017</li>
+												<li><img class="flag" src="img/flag_europe.png" alt="Drapeau Europe"> 27 septembre 2017</li>
+												<li><img class="flag" src="img/flag_australia.png" alt="Drapeau Australie"> 27 septembre 2017</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td>Nintendo Entertainment System - Nintendo Switch Online</td>
+										<td>
+											<ul>
+												<li><img class="flag" src="img/flag_japan.png" alt="Drapeau Japon"> 18 septembre 2018</li>
+												<li><img class="flag" src="img/flag_usa.png" alt="Drapeau Etats-Unis"> 19 septembre 2018</li>
+												<li><img class="flag" src="img/flag_europe.png" alt="Drapeau Europe"> 19 septembre 2018</li>
+												<li><img class="flag" src="img/flag_australia.png" alt="Drapeau Australie"> 19 septembre 2018</li>
+												<li><img class="flag" src="img/flag_hong_kong.png" alt="Drapeau Hong Kong"> 23 avril 2019</li>
+												<li><img class="flag" src="img/flag_south_korea.png" alt="Drapeau Corée du Sud"> 23 avril 2019</li>
+											</ul>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<p>Source : <a class="link" href="https://www.mariowiki.com/Mario_Bros._(game)" title="Afficher la page Super Mario Wiki">Super Mario Wiki</a></p>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section id="manual">
+				<div class="center">
+					<h2>Manuel</h2>
+					<div class="information">
+						<h3>Objectif</h3>
+						<div class="information-content">
+							<p>Le joueur doit vaincre les ennemis. Il doit pour ce faire frapper sous la plate-forme de l'ennemi ciblé en sautant depuis l'étage inférieur, et ainsi le retourner sur le dos. L'ennemi est alors vulnérable et il suffit de le toucher pour l'éliminer. Si le joueur n'élimine pas un ennemi vulnérable assez rapidement, celui-ci repart, sa couleur change et sa vitesse augmente. Un ennemi peut changer et augmenter sa vitesse par deux fois.</p>
+							<ol>
+								<li>Un ennemi est vulnérable après un saut.<br><img class="tutorial" src="img/tutorial_1.png" alt="Tutoriel 1"></li>
+								<li>Vous pouvez ensuite l'envoyer valser.<br><img class="tutorial" src="img/tutorial_2.png" alt="Tutoriel 2"></li>
+								<li>Additionnellement il est possible marcher à gauche de l'écran pour ressortir à droite et inversement.<br><img class="tutorial" src="img/tutorial_3.png" alt="Tutoriel 3"></li>
+							</ol>
+						</div>
+					</div>
+					<div class="information">
+						<h3>Contrôles</h3>
+						<div class="information-content">
+							<ul>
+								<li><img class="control" src="img/control_1.png" alt="Contrôle 1"> (Flèche gauche / Flèche droite) : Bouger.</li>
+								<li><img class="control" src="img/control_2.png" alt="Contrôle 2"> (Espace) : Sauter.</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+		<script src="js/functions.js"></script>
+		<script src="js/game.js"></script>
+	</body>
 </html>
